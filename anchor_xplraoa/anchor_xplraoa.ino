@@ -1,15 +1,17 @@
 /**
- * @version 1.0.0
+ * @version 1.0.1
  * @author  Jyun-wei, Su
  * @author  Ming-Yan, Tsai
- * @date    2022/07/05
+ * @date    2022/07/06
  * @brief   brief description
- * @details
+ * @details 
  * @bug     ESP8266 mDNS advertise service actual work after entering loop()
  * @exception none
  * @see Calculate how much memory have to allocate to the JSON document using online tool: https://arduinojson.org/v6/assistant 
  * @see mDNS query servie on ESP32 Boards: https://techtutorialsx.com/2020/04/27/esp32-query-mdns-service/
  * @see mDNS advertise servie on ESP32 Boards: https://techtutorialsx.com/2020/04/18/esp32-advertise-service-with-mdns/
+ * @see mDNS query servie on ESP8266 Boards: https://stackoverflow.com/questions/44187924/nodemcu-resolving-raspberrys-local-dns-through-mdns
+ * @see mDNS advertise servie on ESP8266 Boards: https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266mDNS/examples/mDNS_Web_Server/mDNS_Web_Server.ino
  * @see Compile on both ESP32 and ESP8266: https://community.platformio.org/t/compile-on-both-esp32-and-esp8266/14356
  * @see How to send UDP packet: https://forum.arduino.cc/t/sending-udp-packets-from-an-esp8266-nodemcu/855730
  * @note Make sure NTPClient_Generic.h only included in main .ino to avoid `Multiple Definitions` Linker Error
@@ -114,8 +116,8 @@ void setup()
   
   //=====Reset XPLR-AoA Anchor BEGIN=====
   SerialSwitchTo(COM_SERIAL);
-  ComSerial.print("\r");
-  ComSerial.print("AT+CPWROFF\r");
+  ComSerial.printf("\r");
+  ComSerial.printf("AT+CPWROFF\r");
   //=====Reset XPLR-AoA Anchor END=====
 
   SerialSwitchTo(DBG_SERIAL);
@@ -123,11 +125,11 @@ void setup()
   DbgSerial.printf("=============================================\n");
   DbgSerial.printf("               System Starting               \n"); 
   DbgSerial.printf("=============================================\n");
-  DbgSerial.println("Board Type        : " + String(ARDUINO_BOARD));
-  DbgSerial.println("Board MAC Address : " + String(WiFi.macAddress()));
+  DbgSerial.printf("Board Type        : %s\n", ARDUINO_BOARD);
+  DbgSerial.printf("Board MAC Address : %s\n", WiFi.macAddress().c_str());
   DbgSerial.printf("Default Serial    : %s\n" , isDebugSerial ? "DEBUG": "COMMUNIATE");
-  DbgSerial.println("=============================================");
-  DbgSerial.print("Connecting To WiFi: " + String(WIFI_SSID));
+  DbgSerial.printf("=============================================\n");
+  DbgSerial.printf("Connecting To WiFi: %s", WIFI_SSID);
 
   //=====Wifi AND mDNS CONFIG BEGIN=====
   mDNS_name += WiFi.macAddress();
@@ -145,31 +147,31 @@ void setup()
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED){
     delay(500);
-    DbgSerial.print(".");
+    DbgSerial.printf(".");
   }
   wifi_rssi = WiFi.RSSI();
-  DbgSerial.print("connected: ");
+  DbgSerial.printf("connected: ");
   DbgSerial.println(WiFi.localIP().toString() + ", RSSI: " + (String)wifi_rssi);
   //=====Connect to Wifi END=====
   
   //=====Startup mDNS Service BEGIN=====
-  DbgSerial.print("Starting mDNS     : " + mDNS_name);
+  DbgSerial.printf("Starting mDNS     : %s", mDNS_name.c_str());
   if(!MDNS.begin(mDNS_name.c_str())) {
-     DbgSerial.println("Error starting mDNS");
+     DbgSerial.printf("Error starting mDNS\n");
   }else{
     MDNS.addService("http", "tcp", 80);
-    DbgSerial.println(" ..started");
+    DbgSerial.printf(" ..started\n");
   }
   //=====Startup mDNS Service END=====
   
   //=====Resolving HOST IP BEGIN=====
-  DbgSerial.print("Resolving HOST    : " + String(HOST_NAME) + String(".local"));
+  DbgSerial.printf("Resolving HOST    : %s%s ", HOST_NAME, ".local");
   while ((serverIp.toString() == "(IP unset)") || (serverIp.toString() == "0.0.0.0")) {
     // (IP unset) is for esp8266, 0.0.0.0 is for esp32
     delay(250);
-    DbgSerial.print(".");
+    DbgSerial.printf(".");
 #ifdef ESP8266
-    for (int i = 0; i < MDNS.queryService("workstation", "tcp"); ++i) {
+    for (int i = 0; i < (int)MDNS.queryService("workstation", "tcp"); i++) {
       if (MDNS.hostname(i).compareTo((String)HOST_NAME + (String)".local") == 0) serverIp = MDNS.IP(i);
     }
 #endif
@@ -177,13 +179,12 @@ void setup()
     serverIp = MDNS.queryHost(HOST_NAME);
 #endif
   }
-  DbgSerial.print("resolved: ");
-  DbgSerial.println(serverIp.toString());
+  DbgSerial.printf("resolved: %s\n", serverIp.toString().c_str());
   //=====Resolving HOST IP END=====
   
   //=====Sync time to HOST BEGIN=====
   timeClient.setPoolServerIP(serverIp);
-  timeClient.setPoolServerName(NULL); // Because we use ip, must set server name to NULL
+  timeClient.setPoolServerName(NULL); // Because we use IP mode, server name must set to NULL
   timeClient.setUpdateInterval(NTP_UPDATE_INTERVAL_MS);
   timeClient.begin();
 
@@ -191,14 +192,14 @@ void setup()
   while(!timeClient.updated()){
     timeClient.update();
     delay(1000);
-    DbgSerial.print(".");
+    DbgSerial.printf(".");
   }
-  DbgSerial.println("successed.");
-  DbgSerial.println("UTC               : " + timeClient.getFormattedTime()); 
+  DbgSerial.printf("successed.\n");
+  DbgSerial.printf("UTC               : %s\n", timeClient.getFormattedTime().c_str()); 
   DbgSerial.printf("UNIX Timestamp(ms): %llu\n" ,timeClient.getUTCEpochMillis());
   //=====Sync time to HOST BEGIN=====
 
-  DbgSerial.println("=============================================");
+  DbgSerial.printf("=============================================\n");
   // ^^^^^ Internet setup done. ^^^^^ //
 
   setJsonDoc(DOC_INITIAL); // Initial JSON document
@@ -281,20 +282,6 @@ void setJsonDoc(JsonDocType docType)
     doc["elevation"]   = nullptr;
     doc["channel"]     = nullptr;
     doc["message"]     = incomingTemp;
-  }
-  else
-  {
-    doc["type"]        = "rssi+aoa";
-    doc["data"]        = "error";
-    doc["unix_time"]   = timeClient.getFormattedTime();
-    doc["uudf_time"]   = nullptr;
-    doc["instance_id"] = nullptr;
-    doc["anchor_id"]   = nullptr; 
-    doc["rssi"]        = nullptr;
-    doc["azimuth"]     = nullptr;
-    doc["elevation"]   = nullptr;
-    doc["channel"]     = nullptr;
-    doc["message"]     = "Unexpected Error.";
   }
 }
 
