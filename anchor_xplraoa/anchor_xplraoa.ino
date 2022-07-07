@@ -1,8 +1,8 @@
 /**
- * @version 1.0.1
+ * @version 1.0.2
  * @author  Jyun-wei, Su
  * @author  Ming-Yan, Tsai
- * @date    2022/07/06
+ * @date    2022/07/07
  * @brief   brief description
  * @details 
  * @bug     ESP8266 mDNS advertise service actual work after entering loop()
@@ -151,7 +151,7 @@ void setup()
   }
   wifi_rssi = WiFi.RSSI();
   DbgSerial.printf("connected: ");
-  DbgSerial.println(WiFi.localIP().toString() + ", RSSI: " + (String)wifi_rssi);
+  DbgSerial.printf("%s, RSSI: %d\n", WiFi.localIP().toString().c_str(), wifi_rssi);
   //=====Connect to Wifi END=====
   
   //=====Startup mDNS Service BEGIN=====
