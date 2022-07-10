@@ -1,6 +1,6 @@
 # Hybird_BLE_AoA_RSSI_Localization
 
- Hybird_BLE_AoA_RSSI_Localization AoA專題 repo
+ Hybird_BLE_AoA_RSSI_Localization AoA專題
 
 ### User Name And Password
 For the convenience of the experiment, all users and passwords are as follows.
