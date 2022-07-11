@@ -58,7 +58,7 @@ String mDNS_name("ESP-");
 char instance_id[16];
 char anchor_id[16];
 int wifi_rssi, rssi, channel;
-unsigned int uudf_timestamp;
+unsigned int uudf_timestamp, unix_timestamp;
 int scanTime = 1; //In seconds
 uint16_t EddystoneBeconUUID = 0xFEAA;
 
@@ -90,6 +90,7 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
                      millis(), cServiceData[0x0C], cServiceData[0x0D], cServiceData[0x0E], cServiceData[0x0F], cServiceData[0x10], cServiceData[0x11], advertisedDevice.getRSSI());
       sprintf(instance_id, "%02X%02X%02X%02X%02X%02X", cServiceData[0x0C], cServiceData[0x0D], cServiceData[0x0E], cServiceData[0x0F], cServiceData[0x10], cServiceData[0x11]);
       rssi = advertisedDevice.getRSSI();
+      unix_timestamp = timeClient.getUTCEpochMillis();
       uudf_timestamp = millis();
       
       setJsonDoc(DOC_MEASUREMENT);
@@ -226,6 +227,7 @@ void setJsonDoc(JsonDocType docType){
   else if(docType == DOC_MEASUREMENT)
   {
     doc["data"]        = "measurement";
+    doc["unix_time"]   = unix_timestamp;
     doc["uudf_time"]   = uudf_timestamp;
     doc["instance_id"] = instance_id; 
     doc["rssi"]        = rssi;

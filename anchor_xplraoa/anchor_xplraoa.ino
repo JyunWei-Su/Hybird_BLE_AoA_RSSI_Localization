@@ -247,7 +247,7 @@ void setJsonDoc(JsonDocType docType)
 {
   if(docType == DOC_INITIAL)
   {
-    doc["type"]        = "rssi+aoa";
+    doc["type"]        = DEVICE_TYPE;
     doc["data"]        = "message";
     doc["unix_time"]   = timeClient.getUTCEpochMillis();
     doc["uudf_time"]   = nullptr;
