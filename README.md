@@ -18,3 +18,7 @@ PASSWORD : `12345678`
 #### Test
 test
 
+## note
+used the option Run -> Add Configuration (or Open configuration, if available) This will open your current 'launch.json' file. Now you may add this line to the configuration wanted (in my case was Python):
+
+`"cwd": "${fileDirname}"`
