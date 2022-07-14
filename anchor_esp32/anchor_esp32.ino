@@ -58,7 +58,8 @@ String mDNS_name("ESP-");
 char instance_id[16];
 char anchor_id[16];
 int wifi_rssi, rssi, channel;
-unsigned int uudf_timestamp, unix_timestamp;
+unsigned int uudf_timestamp;
+unsigned long long unix_timestamp;
 int scanTime = 1; //In seconds
 uint16_t EddystoneBeconUUID = 0xFEAA;
 
@@ -77,21 +78,16 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
     strServiceData.copy((char *)cServiceData, strServiceData.length(), 0);
 
     if (advertisedDevice.getServiceDataUUID().equals(BLEUUID(EddystoneBeconUUID))==true) {  // found Eddystone UUID
-      //Serial.printf("Advertised Device: %s \n", advertisedDevice.toString().c_str());
-      //Serial.printf("is Eddystone: %d %s length %d\n", advertisedDevice.getServiceDataUUID().bitSize(), advertisedDevice.getServiceDataUUID().toString().c_str(),strServiceData.length());
-      //Serial.printf("RSSI: %d, UUID: %s\n", advertisedDevice.getRSSI(), advertisedDevice.getServiceUUID().toString().c_str());
-      //String rssi = (String)(advertisedDevice.getRSSI());
-      //Udp.beginPacket(serverIp.toString().c_str(), UDP_PORT);
-      //Udp.write((const uint8_t*)rssi.c_str(), sizeof(rssi.c_str()));
-      //Udp.endPacket();
       //-----
       //for (int i=0;i<strServiceData.length();i++) Serial.printf("[%02x]",cServiceData[i]); Serial.printf("\n");
-      Serial.printf("uudf time: %lu\tinstance_id: %02X%02X%02X%02X%02X%02X RSSI: %d\t\n",
-                     millis(), cServiceData[0x0C], cServiceData[0x0D], cServiceData[0x0E], cServiceData[0x0F], cServiceData[0x10], cServiceData[0x11], advertisedDevice.getRSSI());
-      sprintf(instance_id, "%02X%02X%02X%02X%02X%02X", cServiceData[0x0C], cServiceData[0x0D], cServiceData[0x0E], cServiceData[0x0F], cServiceData[0x10], cServiceData[0x11]);
-      rssi = advertisedDevice.getRSSI();
       unix_timestamp = timeClient.getUTCEpochMillis();
       uudf_timestamp = millis();
+      
+      sprintf(instance_id, "%02X%02X%02X%02X%02X%02X", cServiceData[0x0C], cServiceData[0x0D], cServiceData[0x0E], cServiceData[0x0F], cServiceData[0x10], cServiceData[0x11]);
+      rssi = advertisedDevice.getRSSI();
+      Serial.printf("uudf time: %lu\tinstance_id: %s RSSI: %d\t\n",
+                     millis(), instance_id, rssi);
+      
       
       setJsonDoc(DOC_MEASUREMENT);
       Udp.beginPacket(serverIp.toString().c_str(), UDP_PORT);

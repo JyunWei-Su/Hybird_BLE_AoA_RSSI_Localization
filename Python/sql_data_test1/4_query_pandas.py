@@ -24,6 +24,7 @@ try:
     db_version = cur.fetchone()
     print(db_version)
 
+    # https://stackoverflow.com/questions/27884268/return-pandas-dataframe-from-postgresql-query-with-sqlalchemy
     df = pd.read_sql_query('select * from "measurement"',con=conn)
     print(df)
     os.system('pause')

@@ -22,3 +22,7 @@ test
 used the option Run -> Add Configuration (or Open configuration, if available) This will open your current 'launch.json' file. Now you may add this line to the configuration wanted (in my case was Python):
 
 `"cwd": "${fileDirname}"`
+
+## 重要 anchor編譯後需要檢查是否有同步
+將Tag設為1Hz
+開UDP server 監聽封包檢查是否同步
