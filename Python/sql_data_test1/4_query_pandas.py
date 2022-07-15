@@ -27,7 +27,8 @@ try:
     # https://stackoverflow.com/questions/27884268/return-pandas-dataframe-from-postgresql-query-with-sqlalchemy
     df = pd.read_sql_query('select * from "measurement"',con=conn)
     print(df)
-    os.system('pause')
+    df.to_hdf("file.h5","store_data", append=False)
+    #os.system('pause')
     cur.close()
     if conn is not None:
         conn.close()
