@@ -78,6 +78,7 @@ try:
 except ValueError as ex:
     print(f"{ex}")
 measurement_data['label'] = measurement_data['unix_time'] // 1000 # 如果要切更細??
+print(measurement_data)
 measurement_data.drop(columns='unix_time', inplace=True) 
 measurement_data = measurement_data[['label','rssi','azimuth','elevation']] #swap order
 #cut_range = np.arange(1657845678000, 1657845878000, 1000)

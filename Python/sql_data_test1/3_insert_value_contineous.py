@@ -28,6 +28,7 @@ print("UDP server up and listening at ", localPort)
     
 conn = None
 cur = None
+#連線資料庫
 try:
     # read database configuration
     params = config()
@@ -44,6 +45,7 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
     print(error)
 
+#聽port
 while(True):
     try:
         readable, writable, exceptional = select.select(UDPServerSockets, [], [])
@@ -54,7 +56,7 @@ while(True):
             clientMsg = "Message from Client:{}".format(message)
             clientIP  = "Client IP Address:{}".format(address)
 
-            obj = json.loads(message)
+            obj = json.loads(message) #轉成dict
             print("=============================================")
             #print(clientMsg)
             #print(clientIP)
