@@ -1,5 +1,5 @@
 /**
- * @version 1.0.2
+ * @version 1.1.0
  * @author  Jyun-wei, Su
  * @author  Ming-Yan, Tsai
  * @date    2022/07/07
@@ -45,8 +45,8 @@
 
 #include <WiFiUdp.h>
 #include <ArduinoJson.h>
-#include <NTPClient_Generic.h>
-
+//#include <NTPClient_Generic.h>
+#include <ESPNtpClient.h>
 
 /***** DEDINE SERIAL PORT *****/
 #if defined(ARDUINO_ESP8266_GENERIC) // ESP01(ESP8266)
@@ -66,10 +66,11 @@
 #endif
 
 /***** DEDINE AND TYPEDEF *****/
-#define TIME_ZONE_OFFSET_HRS   (+8)
-#define NTP_UPDATE_INTERVAL_MS 60000L
+//#define TIME_ZONE_OFFSET_HRS   (+8)
+//#define NTP_UPDATE_INTERVAL_MS 60000L
 #define DEVICE_TYPE   "rssi+aoa:xplr-aoa"
 #define HOST_NAME     "xplr-aoa"
+#define HOST_MDNS     "xplr-aoa.local"
 #define WIFI_SSID     "XPLR-AOA"
 #define WIFI_PASSWORD "12345678"
 #define UDP_PORT       4101
@@ -97,14 +98,16 @@ size_t incomingSize;
 char instance_id[16];
 char anchor_id[16];
 int wifi_rssi, rssi, azimuth, elevation, reserved, channel;
-unsigned int uudf_timestamp;
+unsigned long uudf_timestamp;
 bool isDebugSerial;
+NTPEvent_t ntpEvent; // Last triggered event
+int ntp_fail_count;
 
 /***** OBJECT INSTANTIATION  *****/
 WiFiUDP Udp;
 IPAddress serverIp;
 StaticJsonDocument<256> doc; // Have to calculate how much memory have to allocate
-NTPClient timeClient(Udp, 3600*TIME_ZONE_OFFSET_HRS);
+//NTPClient timeClient(Udp, 3600*TIME_ZONE_OFFSET_HRS);
 
 void setup()
 {
@@ -183,21 +186,41 @@ void setup()
   //=====Resolving HOST IP END=====
   
   //=====Sync time to HOST BEGIN=====
-  timeClient.setPoolServerIP(serverIp);
-  timeClient.setPoolServerName(NULL); // Because we use IP mode, server name must set to NULL
-  timeClient.setUpdateInterval(NTP_UPDATE_INTERVAL_MS);
-  timeClient.begin();
-
-  DbgSerial.print("Sync Time To HOST : " + timeClient.getPoolServerIP().toString());
-  while(!timeClient.updated()){
-    timeClient.update();
-    delay(1000);
-    DbgSerial.printf(".");
+  //timeClient.setPoolServerIP(serverIp);
+  //timeClient.setPoolServerName(NULL); // Because we use IP mode, server name must set to NULL
+  //timeClient.setUpdateInterval(NTP_UPDATE_INTERVAL_MS);
+  //timeClient.begin();
+  //DbgSerial.print("Sync Time To HOST : " + timeClient.getPoolServerIP().toString());
+  //while(!timeClient.updated()){
+  //  timeClient.update();
+  //  delay(1000);
+  //  DbgSerial.printf(".");
+  //}
+  //DbgSerial.printf("successed.\n");
+  //DbgSerial.printf("UTC               : %s\n", timeClient.getFormattedTime().c_str()); 
+  //DbgSerial.printf("UNIX Timestamp(ms): %llu\n" ,timeClient.getUTCEpochMillis());
+  ntp_fail_count = 0;
+  unsigned long log_time = millis();
+  NTP.setTimeZone (TZ_Asia_Taipei);
+  NTP.onNTPSyncEvent ([] (NTPEvent_t event) {ntpEvent = event; });
+  NTP.setNtpServerName(HOST_MDNS);
+  NTP.begin();
+  
+  DbgSerial.printf("Sync Time To HOST : %s", HOST_MDNS);
+  while(ntpEvent.event != timeSyncd || NTP.getFirstSync() <= 0){
+    if(millis() - log_time >= 3000) //delay(3000); // DO NOT USE DELAY WHEN SYNC TIME
+    {
+      log_time = millis();
+      DbgSerial.printf(".");
+      ntp_fail_count ++;
+      if(ntp_fail_count >30){ESP.restart();}
+    }
+    delay(0);
   }
   DbgSerial.printf("successed.\n");
-  DbgSerial.printf("UTC               : %s\n", timeClient.getFormattedTime().c_str()); 
-  DbgSerial.printf("UNIX Timestamp(ms): %llu\n" ,timeClient.getUTCEpochMillis());
-  //=====Sync time to HOST BEGIN=====
+  DbgSerial.printf("UTC               : %llu\n", NTP.millis()); 
+  DbgSerial.printf("UNIX Timestamp(ms): %s\n" , NTP.getTimeDateStringUs ());
+  //=====Sync time to HOST END=====
 
   DbgSerial.printf("=============================================\n");
   // ^^^^^ Internet setup done. ^^^^^ //
@@ -217,15 +240,16 @@ void setup()
 void loop() 
 {
   if(WiFi.status() != WL_CONNECTED) ESP.restart();
-  timeClient.update();
+  //timeClient.update();
 #ifdef ESP8266
   MDNS.update(); // ESP8266 need to call MDNS.update();
 #endif
   while(ComSerial.available() > 0) {
     incomingSize = ComSerial.readBytesUntil('\n', incomingTemp, sizeof(incomingTemp) / sizeof(char) );
     if(incomingSize <= sizeof(char) * 8) break; // invalid data
-    doc["unix_time"] = timeClient.getUTCEpochMillis();
-    int result = sscanf(incomingTemp, "+UUDF:%12s,%d,%d,%d,%d,%d,\"%12s\",\"\",%u",
+    //doc["unix_time"] = timeClient.getUTCEpochMillis();
+    doc["unix_time"] = NTP.millis();
+    int result = sscanf(incomingTemp, "+UUDF:%12s,%d,%d,%d,%d,%d,\"%12s\",\"\",%lu",
                         instance_id, &rssi, &azimuth, &elevation, &reserved, &channel, anchor_id, &uudf_timestamp);
     if(result) setJsonDoc(DOC_MEASUREMENT);
     else       setJsonDoc(DOC_MESSAGE);
@@ -249,7 +273,6 @@ void setJsonDoc(JsonDocType docType)
   {
     doc["type"]        = DEVICE_TYPE;
     doc["data"]        = "message";
-    doc["unix_time"]   = timeClient.getUTCEpochMillis();
     doc["uudf_time"]   = nullptr;
     doc["instance_id"] = nullptr;
     doc["anchor_id"]   = nullptr; 

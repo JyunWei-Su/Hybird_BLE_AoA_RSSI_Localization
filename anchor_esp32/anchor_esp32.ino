@@ -1,5 +1,5 @@
 /**
- * @version 1.0.0
+ * @version 1.1.0
  * @author  Jyun-wei, Su
  * @date    2022/07/06
  * @brief   brief description
@@ -32,13 +32,15 @@
 
 #include <WiFiUdp.h>
 #include <ArduinoJson.h>
-#include <NTPClient_Generic.h>
+//#include <NTPClient_Generic.h>
+#include <ESPNtpClient.h>
 
 /***** DEDINE AND TYPEDEF *****/
 #define TIME_ZONE_OFFSET_HRS   (+8)
 #define NTP_UPDATE_INTERVAL_MS 60000L
 #define DEVICE_TYPE   "rssi:esp32"
 #define HOST_NAME     "xplr-aoa"
+#define HOST_MDNS     "xplr-aoa.local"
 #define WIFI_SSID     "XPLR-AOA"
 #define WIFI_PASSWORD "12345678"
 #define UDP_PORT       4102
@@ -58,16 +60,18 @@ String mDNS_name("ESP-");
 char instance_id[16];
 char anchor_id[16];
 int wifi_rssi, rssi, channel;
-unsigned int uudf_timestamp;
+unsigned long uudf_timestamp;
 unsigned long long unix_timestamp;
 int scanTime = 1; //In seconds
 uint16_t EddystoneBeconUUID = 0xFEAA;
+NTPEvent_t ntpEvent; // Last triggered event
+int ntp_fail_count;
 
 /***** OBJECT INSTANTIATION  *****/
 WiFiUDP Udp;
 IPAddress serverIp;
 StaticJsonDocument<256> doc;
-NTPClient timeClient(Udp, 3600*TIME_ZONE_OFFSET_HRS);
+//NTPClient timeClient(Udp, 3600*TIME_ZONE_OFFSET_HRS);
 BLEScan* pBLEScan;
 
 /***** DEFINE CUSTOM CLASS  *****/
@@ -80,7 +84,8 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
     if (advertisedDevice.getServiceDataUUID().equals(BLEUUID(EddystoneBeconUUID))==true) {  // found Eddystone UUID
       //-----
       //for (int i=0;i<strServiceData.length();i++) Serial.printf("[%02x]",cServiceData[i]); Serial.printf("\n");
-      unix_timestamp = timeClient.getUTCEpochMillis();
+      //unix_timestamp = timeClient.getUTCEpochMillis();
+      unix_timestamp = NTP.millis();
       uudf_timestamp = millis();
       
       sprintf(instance_id, "%02X%02X%02X%02X%02X%02X", cServiceData[0x0C], cServiceData[0x0D], cServiceData[0x0E], cServiceData[0x0F], cServiceData[0x10], cServiceData[0x11]);
@@ -151,21 +156,41 @@ void setup() {
   //=====Resolving HOST IP END=====
   
   //=====Sync time to HOST BEGIN=====
-  timeClient.setPoolServerIP(serverIp);
-  timeClient.setPoolServerName(NULL);  // Because we use IP mode, server name must set to NULL
-  timeClient.setUpdateInterval(NTP_UPDATE_INTERVAL_MS);
-  timeClient.begin();
-
-  Serial.print("Sync Time To HOST : " + timeClient.getPoolServerIP().toString());
-  while(!timeClient.updated()){
-    timeClient.update();
-    delay(1000);
-    Serial.printf(".");
+  //timeClient.setPoolServerIP(serverIp);
+  //timeClient.setPoolServerName(NULL); // Because we use IP mode, server name must set to NULL
+  //timeClient.setUpdateInterval(NTP_UPDATE_INTERVAL_MS);
+  //timeClient.begin();
+  //DbgSerial.print("Sync Time To HOST : " + timeClient.getPoolServerIP().toString());
+  //while(!timeClient.updated()){
+  //  timeClient.update();
+  //  delay(1000);
+  //  DbgSerial.printf(".");
+  //}
+  //DbgSerial.printf("successed.\n");
+  //DbgSerial.printf("UTC               : %s\n", timeClient.getFormattedTime().c_str()); 
+  //DbgSerial.printf("UNIX Timestamp(ms): %llu\n" ,timeClient.getUTCEpochMillis());
+  ntp_fail_count = 0;
+  unsigned long log_time = millis();
+  NTP.setTimeZone (TZ_Asia_Taipei);
+  NTP.onNTPSyncEvent ([] (NTPEvent_t event) {ntpEvent = event; });
+  NTP.setNtpServerName(HOST_MDNS);
+  NTP.begin();
+  
+  Serial.printf("Sync Time To HOST : %s", HOST_MDNS);
+  while(ntpEvent.event != timeSyncd || NTP.getFirstSync() <= 0){
+    if(millis() - log_time >= 3000) //delay(3000); // DO NOT USE DELAY WHEN SYNC TIME
+    {
+      log_time = millis();
+      Serial.printf(".");
+      ntp_fail_count ++;
+      if(ntp_fail_count >30){ESP.restart();}
+    }
+    delay(0);
   }
   Serial.printf("successed.\n");
-  Serial.printf("UTC               : %s\n", timeClient.getFormattedTime().c_str()); 
-  Serial.printf("UNIX Timestamp(ms): %llu\n" ,timeClient.getUTCEpochMillis());
-  //=====Sync time to HOST BEGIN=====
+  Serial.printf("UTC               : %llu\n", NTP.millis()); 
+  Serial.printf("UNIX Timestamp(ms): %s\n" , NTP.getTimeDateStringUs ());
+  //=====Sync time to HOST END=====
 
   Serial.printf("=============================================\n");
   // ^^^^^ Internet setup done. ^^^^^ //
@@ -194,7 +219,7 @@ void setup() {
 
 void loop() {
   if(WiFi.status() != WL_CONNECTED) ESP.restart();
-  timeClient.update();
+  //timeClient.update();
   BLEScanResults foundDevices = pBLEScan->start(scanTime, false);
   pBLEScan->clearResults(); // Delete results fromBLEScan buffer to release memory
 }
@@ -210,7 +235,8 @@ void setJsonDoc(JsonDocType docType){
   {
     doc["type"]        = DEVICE_TYPE;
     doc["data"]        = "message";
-    doc["unix_time"]   = timeClient.getUTCEpochMillis();
+    //doc["unix_time"]   = timeClient.getUTCEpochMillis();
+    doc["unix_time"]   = NTP.millis();
     doc["uudf_time"]   = millis();
     doc["instance_id"] = nullptr;
     String mac = String(WiFi.macAddress());
