@@ -1,0 +1,2445 @@
+*************************** START ****************************
+START TIME: 202207272025
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 4080 bytes (2936 compressed) at 0x00000000 in 0.3 seconds (effective 121.9 kbit/s)...
+Hash of data verified.Wrote 413556 bytes (296998 compressed) at 0x00001000 in 26.3 seconds (effective 125.6 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 2919.9 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 2659.8 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 62.4 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2807.1 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 29 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272026
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+com closed
+Use time: 6 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272028
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 3856 bytes (2762 compressed) at 0x00000000 in 0.3 seconds (effective 122.0 kbit/s)...
+Hash of data verified.Wrote 413556 bytes (296998 compressed) at 0x00001000 in 26.3 seconds (effective 125.6 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 2835.2 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 2832.8 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 62.9 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2798.0 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 29 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272031
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+com closed
+Use time: 6 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272033
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 3856 bytes (2762 compressed) at 0x00000000 in 0.3 seconds (effective 122.0 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 1 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272034
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 3856 bytes (2762 compressed) at 0x00000000 in 0.3 seconds (effective 121.8 kbit/s)...
+Hash of data verified.Wrote 413556 bytes (296998 compressed) at 0x00001000 in 26.4 seconds (effective 125.5 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 62.2 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 28 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272118
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 3856 bytes (2762 compressed) at 0x00000000 in 0.3 seconds (effective 121.9 kbit/s)...
+Hash of data verified.Wrote 413556 bytes (296998 compressed) at 0x00001000 in 26.4 seconds (effective 125.4 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 2814.2 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 2667.4 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 61.7 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2851.8 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 29 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272121
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272121
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272121
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272121
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272121
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272121
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272121
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+com closed
+Use time: 6 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272125
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 1936 bytes (1460 compressed) at 0x00000000 in 0.1 seconds (effective 112.4 kbit/s)...
+Hash of data verified.Wrote 413556 bytes (296998 compressed) at 0x00001000 in 26.4 seconds (effective 125.2 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 2899.6 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 2739.3 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 62.2 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2886.2 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 29 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272128
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 1936 bytes (1460 compressed) at 0x00000000 in 0.1 seconds (effective 112.6 kbit/s)...
+Hash of data verified.Wrote 413556 bytes (296998 compressed) at 0x00001000 in 26.4 seconds (effective 125.2 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 2954.9 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 61.2 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2861.6 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 29 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272145
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 1936 bytes (1460 compressed) at 0x00000000 in 0.1 seconds (effective 113.1 kbit/s)...
+Hash of data verified.Wrote 413556 bytes (296998 compressed) at 0x00001000 in 26.3 seconds (effective 125.6 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 2771.8 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 2778.7 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 61.7 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2979.9 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 28 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272148
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+com closed
+Use time: 6 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272148
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+com closed
+Use time: 6 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272149
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 4080 bytes (2936 compressed) at 0x00000000 in 0.3 seconds (effective 121.3 kbit/s)...
+Hash of data verified.Wrote 413556 bytes (296987 compressed) at 0x00001000 in 26.3 seconds (effective 125.6 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 2936.6 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 3140.3 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 68.8 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2911.6 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 29 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272155
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272156
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272157
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272157
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+com closed
+Use time: 6 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272157
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 4080 bytes (2936 compressed) at 0x00000000 in 0.3 seconds (effective 122.2 kbit/s)...
+Hash of data verified.Wrote 408388 bytes (293527 compressed) at 0x00001000 in 26.0 seconds (effective 125.6 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 3007.0 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 2754.9 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 63.1 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2933.8 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 28 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272204
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+com closed
+Use time: 6 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272208
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 4080 bytes (2936 compressed) at 0x00000000 in 0.3 seconds (effective 121.5 kbit/s)...
+Hash of data verified.Wrote 408388 bytes (293527 compressed) at 0x00001000 in 26.1 seconds (effective 125.3 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 3217.0 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 2905.4 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 67.7 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2836.8 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 28 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272218
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 3856 bytes (2762 compressed) at 0x00000000 in 0.3 seconds (effective 122.1 kbit/s)...
+Hash of data verified.Wrote 419204 bytes (300520 compressed) at 0x00001000 in 26.6 seconds (effective 125.9 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 2821.9 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 2858.4 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 62.9 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2719.2 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 29 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272254
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+com closed
+Use time: 11 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 3856 bytes (2762 compressed) at 0x00000000 in 0.2 seconds (effective 123.8 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 1 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272255
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 3856 bytes (2762 compressed) at 0x00000000 in 0.3 seconds (effective 123.3 kbit/s)...
+Hash of data verified.Wrote 419204 bytes (300520 compressed) at 0x00001000 in 26.5 seconds (effective 126.5 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 28 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272257
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 3856 bytes (2762 compressed) at 0x00000000 in 0.3 seconds (effective 123.2 kbit/s)...
+Hash of data verified.Wrote 419204 bytes (300520 compressed) at 0x00001000 in 26.5 seconds (effective 126.6 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 72.1 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 28 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272258
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+com closed
+Use time: 6 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272311
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 3856 bytes (2762 compressed) at 0x00000000 in 0.3 seconds (effective 123.4 kbit/s)...
+Hash of data verified.Wrote 419204 bytes (300520 compressed) at 0x00001000 in 26.5 seconds (effective 126.8 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 3581.3 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 3261.7 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 71.5 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 3532.4 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 29 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272339
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 1712 bytes (1295 compressed) at 0x00000000 in 0.1 seconds (effective 110.7 kbit/s)...
+Hash of data verified.Wrote 222376 bytes (141270 compressed) at 0x00001000 in 12.6 seconds (effective 141.6 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 2715.5 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 2737.3 kbit/s)...
+Hash of data verified.Wrote 128 bytes (72 compressed) at 0x000fc000 in 0.0 seconds (effective 64.7 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2776.6 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 14 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272343
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 4080 bytes (2936 compressed) at 0x00000000 in 0.3 seconds (effective 122.2 kbit/s)...
+Hash of data verified.Wrote 413556 bytes (296998 compressed) at 0x00001000 in 26.3 seconds (effective 125.8 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 3051.7 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 3218.6 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 68.3 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2936.4 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 28 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272344
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 3856 bytes (2762 compressed) at 0x00000000 in 0.3 seconds (effective 122.0 kbit/s)...
+Hash of data verified.Wrote 413556 bytes (296998 compressed) at 0x00001000 in 26.3 seconds (effective 125.7 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 2599.5 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 2767.4 kbit/s)...
+Hash of data verified.Wrote 128 bytes (75 compressed) at 0x000fc000 in 0.0 seconds (effective 61.5 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2687.1 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 29 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272345
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 128 bytes (72 compressed) at 0x00000000 in 0.0 seconds (effective 63.6 kbit/s)...
+Hash of data verified.Wrote 222376 bytes (141270 compressed) at 0x00001000 in 12.6 seconds (effective 141.3 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 3195.0 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 3420.0 kbit/s)...
+Hash of data verified.Wrote 128 bytes (72 compressed) at 0x000fc000 in 0.0 seconds (effective 75.4 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 3257.2 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 14 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202207272347
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272347
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272347
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272347
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272347
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272347
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272347
+CONNECT BAUD: 115200
+*************************** START ****************************
+START TIME: 202207272347
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+chip sync ok
+0x3ff00050: c1b00000
+0x3ff00054: 020080c7
+0x3ff00058: c900b000
+0x3ff0005c: 00308398
+check_err_0: 0bcheck_err_1: 00check_err_2: 00check_err_3: 02check_err_4: 0b====================
+EFUSE NORMAL MODE
+====================
+=========================
+CRC IN MODE 1: 
+crc_calc_res: 201
+target crc val: 201
+=========================
+=========================
+CRC IN MODE 1:
+crc_calc_res: 176
+target crc val: 176
+=========================
+==================
+EFUSE LOG:
+======================
+    EFUSE LOG:
+    ---------------
+    REG0:C1B00000
+    REG1:020080C7
+    REG2:c900b000
+    REG3:00308398
+    ----------------
+    ====================
+                                   EFUSE NORMAL MODE
+                                   ====================
+EFUSE CHECK PASS...48bit mac
+-----------------------
+ 30 83 98 80 c7 c1CUSTOM_ID: 0C 90 00 00 00 0B 00 00 
+MAC AP : 32-83-98-80-C7-C1
+MAC STA: 30-83-98-80-C7-C1
+get mac res: 1
+get flash id : 0x00144020
+manufacturer_id: 0x20
+device_id: 0x4014
+Wrote 1712 bytes (1295 compressed) at 0x00000000 in 0.1 seconds (effective 111.2 kbit/s)...
+Hash of data verified.Wrote 222376 bytes (141270 compressed) at 0x00001000 in 12.6 seconds (effective 141.5 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x0007e000 in 0.0 seconds (effective 2672.0 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fb000 in 0.0 seconds (effective 2984.7 kbit/s)...
+Hash of data verified.Wrote 128 bytes (72 compressed) at 0x000fc000 in 0.0 seconds (effective 62.9 kbit/s)...
+Hash of data verified.Wrote 4096 bytes (26 compressed) at 0x000fe000 in 0.0 seconds (effective 2706.7 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 15 s
+Download result: PASS
+*************************** END ****************************
+
