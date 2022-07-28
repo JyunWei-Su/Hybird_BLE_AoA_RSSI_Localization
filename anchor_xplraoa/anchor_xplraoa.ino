@@ -1,19 +1,24 @@
 /**
- * @version 1.1.0
+ * @version 1.2.0
  * @author  Jyun-wei, Su
  * @author  Ming-Yan, Tsai
- * @date    2022/07/07
+ * @date    2022/07/28
  * @brief   brief description
  * @details 
  * @bug     ESP8266 mDNS advertise service actual work after entering loop()
  * @exception none
- * @see Calculate how much memory have to allocate to the JSON document using online tool: https://arduinojson.org/v6/assistant 
+ * @see Calculate how much memory have to allocate to the JSON document using online tool: https://arduinojson.org/v6/assistant
+ * @see mDNS advertise servie on both ESP8266 and ESP32 boards: https://www.arduino.cc/reference/en/libraries/wifinina/wifi.hostbyname/
  * @see mDNS query servie on ESP32 Boards: https://techtutorialsx.com/2020/04/27/esp32-query-mdns-service/
  * @see mDNS advertise servie on ESP32 Boards: https://techtutorialsx.com/2020/04/18/esp32-advertise-service-with-mdns/
  * @see mDNS query servie on ESP8266 Boards: https://stackoverflow.com/questions/44187924/nodemcu-resolving-raspberrys-local-dns-through-mdns
  * @see mDNS advertise servie on ESP8266 Boards: https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266mDNS/examples/mDNS_Web_Server/mDNS_Web_Server.ino
  * @see Compile on both ESP32 and ESP8266: https://community.platformio.org/t/compile-on-both-esp32-and-esp8266/14356
  * @see How to send UDP packet: https://forum.arduino.cc/t/sending-udp-packets-from-an-esp8266-nodemcu/855730
+ * @note NTP liabrary use ESPNtpClient rather than NTPClient_Generic due to accuracy
+ *       @see https://github.com/gmag11/ESPNtpClient/releases
+ *       @version 0.2.7
+ *       @code modify
  * @note Make sure NTPClient_Generic.h only included in main .ino to avoid `Multiple Definitions` Linker Error
  *       @see https://github.com/khoih-prog/NTPClient_Generic
  * @note When ESP8266 query mDNS service on Raspberrypi, you have to edit the following line in /etc/avahi/avahi-daemon.conf on Raspberrypi
@@ -27,6 +32,7 @@
  *       SerialSwitchTo KEYWORD1
  *       DBG_SERIAL  KEYWORD2
  *       COM_SERIAL  KEYWORD2
+ *       NTP KEYWORD1
  * @note If yout want to find Board DEFINED, switch on File>Preferences>Compile Verbose in Arduino IDE.
  *       Then build/verify and inspect the output, you will see the -D defines that are passed to the compiler
  * @note The documenting of this file is following by Doxygen style
@@ -69,7 +75,6 @@
 //#define TIME_ZONE_OFFSET_HRS   (+8)
 //#define NTP_UPDATE_INTERVAL_MS 60000L
 #define DEVICE_TYPE   "rssi+aoa:xplr-aoa"
-#define HOST_NAME     "xplr-aoa"
 #define HOST_MDNS     "xplr-aoa.local"
 #define WIFI_SSID     "XPLR-AOA"
 #define WIFI_PASSWORD "12345678"
@@ -98,7 +103,8 @@ size_t incomingSize;
 char instance_id[16];
 char anchor_id[16];
 int wifi_rssi, rssi, azimuth, elevation, reserved, channel;
-unsigned long uudf_timestamp;
+unsigned long uudf_timestamp; // ms
+unsigned long long unix_timestamp; // ms
 bool isDebugSerial;
 NTPEvent_t ntpEvent; // Last triggered event
 int ntp_fail_count;
@@ -168,43 +174,23 @@ void setup()
   //=====Startup mDNS Service END=====
   
   //=====Resolving HOST IP BEGIN=====
-  DbgSerial.printf("Resolving HOST    : %s%s ", HOST_NAME, ".local");
-  while ((serverIp.toString() == "(IP unset)") || (serverIp.toString() == "0.0.0.0")) {
-    // (IP unset) is for esp8266, 0.0.0.0 is for esp32
+  //DbgSerial.printf("INADDR_NONE       : %s\n", IPAddress(INADDR_NONE).toString().c_str());
+  DbgSerial.printf("Resolving HOST    : %s ", HOST_MDNS);
+  while(serverIp.toString() == IPAddress(INADDR_NONE).toString()) {
     delay(250);
     DbgSerial.printf(".");
-#ifdef ESP8266
-    for (int i = 0; i < (int)MDNS.queryService("workstation", "tcp"); i++) {
-      if (MDNS.hostname(i).compareTo((String)HOST_NAME + (String)".local") == 0) serverIp = MDNS.IP(i);
-    }
-#endif
-#ifdef ESP32
-    serverIp = MDNS.queryHost(HOST_NAME);
-#endif
+    int result = WiFi.hostByName(HOST_MDNS, serverIp);
   }
   DbgSerial.printf("resolved: %s\n", serverIp.toString().c_str());
   //=====Resolving HOST IP END=====
   
   //=====Sync time to HOST BEGIN=====
-  //timeClient.setPoolServerIP(serverIp);
-  //timeClient.setPoolServerName(NULL); // Because we use IP mode, server name must set to NULL
-  //timeClient.setUpdateInterval(NTP_UPDATE_INTERVAL_MS);
-  //timeClient.begin();
-  //DbgSerial.print("Sync Time To HOST : " + timeClient.getPoolServerIP().toString());
-  //while(!timeClient.updated()){
-  //  timeClient.update();
-  //  delay(1000);
-  //  DbgSerial.printf(".");
-  //}
-  //DbgSerial.printf("successed.\n");
-  //DbgSerial.printf("UTC               : %s\n", timeClient.getFormattedTime().c_str()); 
-  //DbgSerial.printf("UNIX Timestamp(ms): %llu\n" ,timeClient.getUTCEpochMillis());
   ntp_fail_count = 0;
   unsigned long log_time = millis();
-  NTP.setTimeZone (TZ_Asia_Taipei);
-  NTP.onNTPSyncEvent ([] (NTPEvent_t event) {ntpEvent = event; });
-  NTP.setNtpServerName(HOST_MDNS);
-  NTP.begin();
+  NTP.setTimeZone(TZ_Asia_Taipei);
+  NTP.onNTPSyncEvent([] (NTPEvent_t event) {ntpEvent = event;}); // lambda function
+  NTP.setInterval(5,60); //Default: shortInterval=15s, longInterval=1800s; both need >=10
+  NTP.begin(HOST_MDNS);
   
   DbgSerial.printf("Sync Time To HOST : %s", HOST_MDNS);
   while(ntpEvent.event != timeSyncd || NTP.getFirstSync() <= 0){

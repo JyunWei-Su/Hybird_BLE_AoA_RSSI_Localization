@@ -60,8 +60,8 @@ String mDNS_name("ESP-");
 char instance_id[16];
 char anchor_id[16];
 int wifi_rssi, rssi, channel;
-unsigned long uudf_timestamp;
-unsigned long long unix_timestamp;
+unsigned long uudf_timestamp; // ms
+unsigned long long unix_timestamp; // ms
 int scanTime = 1; //In seconds
 uint16_t EddystoneBeconUUID = 0xFEAA;
 NTPEvent_t ntpEvent; // Last triggered event
@@ -85,7 +85,7 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
       //-----
       //for (int i=0;i<strServiceData.length();i++) Serial.printf("[%02x]",cServiceData[i]); Serial.printf("\n");
       //unix_timestamp = timeClient.getUTCEpochMillis();
-      unix_timestamp = NTP.millis();
+      unix_timestamp = (unsigned long long)NTP.millis();
       uudf_timestamp = millis();
       
       sprintf(instance_id, "%02X%02X%02X%02X%02X%02X", cServiceData[0x0C], cServiceData[0x0D], cServiceData[0x0E], cServiceData[0x0F], cServiceData[0x10], cServiceData[0x11]);

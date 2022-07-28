@@ -85,8 +85,8 @@ measurement_data = measurement_data[['label','rssi','azimuth','elevation']] #swa
 #segments = pd.cut(measurement_data['unix_time'], cut_range)
 #print(segments)
 grouped = measurement_data.groupby('label')
-print(grouped.mean())
-print(grouped.std())
+print(type(grouped.mean()))
+print(grouped.mean() , grouped.std())
 
 # R = 10 ^ ((P0-Pi) / gamma)
 #xplr-aoa P0= -56.776; gamma= 1.7525
