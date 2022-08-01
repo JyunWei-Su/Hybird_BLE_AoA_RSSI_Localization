@@ -90,7 +90,7 @@ print(grouped.mean() , grouped.std())
 
 # R = 10 ^ ((P0-Pi) / gamma)
 #xplr-aoa P0= -56.776; gamma= 1.7525
-
+# pi: measurement
 #dt.timestamp()
 #1657873805.281
 #print(dt.timestamp()*1000)
