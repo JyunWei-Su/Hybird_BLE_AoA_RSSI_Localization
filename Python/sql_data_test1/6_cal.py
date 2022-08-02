@@ -1,4 +1,5 @@
 from asyncio.windows_events import NULL
+from email.headerregistry import ContentTransferEncodingHeader
 from re import T
 import secrets
 import sys
@@ -9,6 +10,7 @@ import warnings ## bypass psycopg2 connection warning
 from config import config
 import pandas as pd
 import numpy as np
+from numpy import linalg as la
 import pprint as pp
 import socket
 import json
@@ -93,17 +95,20 @@ def get_measurement_data(system_config:dict, anchor_name:str, tag_name:str, star
     #print(measurement_data)
     return measurement_data
 
-def cal_R(system_config:dict, anchor_name:str, rssi):
+def cal_basic_R(system_config:dict, anchor_name:str, rssi):
     p0 = system_config[anchor_name]['p0']
     gamma = system_config[anchor_name]['gamma']
     R = np.power(10, ((p0 - rssi) / gamma))
+    # print('cal_R:', p0, rssi, gamma, R)
     # R = 10 ^ ((p0 - rssi) / gamma)
     return R
 
 def generate_anchor(system_config:dict, anchor_name:str, basic_measure_data:dict):
+    coordinate = np.asarray(system_config[anchor_name]['coordinate']).T
     anchor = []
     anchor.append({'R': basic_measure_data['R'], \
-                   'coordinate': np.asarray(system_config[anchor_name]['coordinate']).T })
+                   'coordinate': coordinate, \
+                   'K': la.norm(coordinate)})
     return anchor
 
 def generate_virtual_anchor(basic_measure_data:dict):
@@ -111,10 +116,10 @@ def generate_virtual_anchor(basic_measure_data:dict):
     azimuth = basic_measure_data['azimuth']
     elevation = basic_measure_data['elevation']
 
-    cos_theta = np.cos(np.deg2rad(azimuth)) # need to transform deg to rad
-    sin_theta = np.sin(np.deg2rad(azimuth))
-    cos_phi = np.cos(np.deg2rad(elevation))
-    sin_phi = np.sin(np.deg2rad(elevation))
+    cos_theta = np.cos(np.deg2rad(elevation)) # need to transform deg to rad
+    sin_theta = np.sin(np.deg2rad(elevation))
+    cos_phi = np.cos(np.deg2rad(azimuth))
+    sin_phi = np.sin(np.deg2rad(azimuth))
     virtual_anchor = []
     # the following coordinate are stored in np.array type
     # x
@@ -148,22 +153,53 @@ def virtual_anchor_coordinate_transform(system_config:dict, anchor_name:str, vir
         #print('virtual coord.:', virtual_anchor['coordinate'])
         temp['coordinate'] = transform_matrix @ virtual_anchor['coordinate'] + anchor_coordinate
         temp['transformed'] = True
+        temp['K'] = la.norm(temp['coordinate'])
         transformed.append(temp)
     
     return transformed
+
+def extract_cal_anchor_list(measurement_data:dict):
+    cal_anchor_list = []
+    for anchor in measurement_data.keys():
+        for data in measurement_data[anchor]['anchor']:
+            if 'transformed' in data.keys():
+                del data['transformed']
+            cal_anchor_list.append(data)
+        # 移掉 'transformed' 屬性 https://stackoverflow.com/questions/5844672/delete-an-element-from-a-dictionary
+        # cal_anchor_list += measurement_data[anchor]['anchor']
+    return cal_anchor_list
+
+def generate_H(cal_anchor_list_sorted:list):
+    length =  len(cal_anchor_list_sorted)
+    H = np.empty((length - 1, 3))
+    
+    for index in range(1, length):
+        H[index - 1 : ] = cal_anchor_list_sorted[index]['coordinate'] - cal_anchor_list_sorted[0]['coordinate']
+    return H
+
+def generate_b(cal_anchor_list_sorted:list):
+    length =  len(cal_anchor_list_sorted)
+    b = np.zeros((length - 1, 1))
+    kr = cal_anchor_list_sorted[0]['K']
+    rr = cal_anchor_list_sorted[0]['R']
+    for index in range(1, length):
+        ki = cal_anchor_list_sorted[index]['K']
+        ri = cal_anchor_list_sorted[index]['R']
+        b[index - 1] =  0.5 * (ki ** 2 - kr ** 2 - ri ** 2 + rr ** 2)
+    return b
 
 
 system_config = get_system_config("system.ini")
 measurement_data = {}
 # pp.pprint(system_config)
-for anchor in ['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d']: #'anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'
+for anchor in ['anchor-b', 'anchor-c', 'anchor-d']: #'anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'
     print(f'====={anchor}=====')
     try:
-        measurement_data[anchor] = get_measurement_data(system_config, anchor, 'tag-b', 1658824700000, 1658824720000)
+        measurement_data[anchor] = get_measurement_data(system_config, anchor, 'tag-b', 1658824700000, 1658824701000)
     except ValueError as ex:
         print(f"{ex}")
-    
-    measurement_data[anchor]['basic']['R'] = cal_R(system_config, anchor, measurement_data[anchor]['basic']['rssi'])
+    # basic R
+    measurement_data[anchor]['basic']['R'] = cal_basic_R(system_config, anchor, measurement_data[anchor]['basic']['rssi'])
     
     if measurement_data[anchor]['isAoA']: #xplr-aoa
         measurement_data[anchor]['anchor'] = generate_virtual_anchor(measurement_data[anchor]['basic'])
@@ -172,7 +208,41 @@ for anchor in ['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d']: #'anchor-a', 'an
         #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
     else: #xplr-aoa
         measurement_data[anchor]['anchor'] = generate_anchor(system_config, anchor, measurement_data[anchor]['basic'])
-
     #pp.pprint(measurement_data)
 
 pp.pprint(measurement_data)
+
+cal_anchor_list = extract_cal_anchor_list(measurement_data)
+
+#pp.pprint(cal_anchor_list)
+cal_anchor_list = sorted(cal_anchor_list, key=lambda x: x['R']) # sort using R https://note.nkmk.me/en/python-dict-list-sort/
+
+pp.pprint(cal_anchor_list)
+
+H = generate_H(cal_anchor_list)
+b = generate_b(cal_anchor_list)
+#print(H)
+#print(b)
+HT = H.T
+print('+' * 50)
+print(H)
+print('+' * 50)
+print(HT)
+
+HTH_inv = la.inv(H.T @ H)
+print('+' * 50)
+print(HTH_inv)
+
+#x_hat = HTH_inv @ H.T @ b
+x_hat = HTH_inv @ H.T
+print('+' * 50)
+print(x_hat)
+
+x_hat = x_hat @ b
+print('+' * 50)
+print(x_hat)
+
+
+
+
+# calculate

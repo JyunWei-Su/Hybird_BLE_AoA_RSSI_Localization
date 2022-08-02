@@ -40,3 +40,13 @@ used the option Run -> Add Configuration (or Open configuration, if available) T
 * ESPNtpClient.h
     * 將 line 628 `if (ntpServerIPAddress == IPAddress(INADDR_NONE))` 改為 `if (ntpServerIPAddress.toString() == IPAddress(INADDR_NONE).toString())` (issue [#43](https://github.com/gmag11/ESPNtpClient/issues/43))
     * 將 line 607 下新增一行 `actualInterval = ntpTimeout + 500;`
+
+## id-name mapping table
+|       type        |   name   |      id      |
+|:-----------------:|:--------:|:------------:|
+| rssi+aoa:xplr-aoa | anchor-a | 6C1DEBA097F3 |
+| rssi+aoa:xplr-aoa | anchor-b | 6C1DEBA097FA |
+|    rssi:esp32     | anchor-c | B8D61A822CAC |
+|    rssi:esp32     | anchor-d | 24D7EB0B2004 |
+|        tag        |  tag-a   | 6C1DEBA42193 |
+|        tag        |  tag-b   | 6C1DEBA41680 |
