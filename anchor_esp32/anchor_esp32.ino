@@ -1,7 +1,7 @@
 /**
- * @version 1.1.0
+ * @version 1.3.0
  * @author  Jyun-wei, Su
- * @date    2022/07/06
+ * @date    2022/08/29
  * @brief   brief description
  * @details 
  * @bug     none
@@ -31,28 +31,30 @@
 #endif
 
 #include <WiFiUdp.h>
+#include <PubSubClient.h>
 #include <ArduinoJson.h>
-//#include <NTPClient_Generic.h>
 #include <ESPNtpClient.h>
 
 /***** DEDINE AND TYPEDEF *****/
-#define TIME_ZONE_OFFSET_HRS   (+8)
-#define NTP_UPDATE_INTERVAL_MS 60000L
+//#define TIME_ZONE_OFFSET_HRS   (+8)
+//#define NTP_UPDATE_INTERVAL_MS 60000L
 #define DEVICE_TYPE   "rssi:esp32"
-#define HOST_NAME     "xplr-aoa"
 #define HOST_MDNS     "xplr-aoa.local"
 #define WIFI_SSID     "XPLR-AOA"
 #define WIFI_PASSWORD "12345678"
 #define UDP_PORT       4102
+#define MQTT_PORT      1883
 //#define ENDIAN_CHANGE_U16(x) ((((x)&0xFF00)>>8) + (((x)&0xFF)<<8))
 
 typedef enum JsonDocType
 {
-  DOC_INITIAL,DOC_MEASUREMENT,DOC_MESSAGE,
+  DOC_INITIAL, DOC_MEASUREMENT, DOC_MESSAGE,
 } JsonDocType;
 
 /***** FUNCTION PROTOTYPE *****/
 void setJsonDoc(JsonDocType docType);
+void pubSubCallback(String topic, byte* message, unsigned int length);
+void mqttSentStatus(const char *msg);
 
 /***** GLOBAL VARIABLE *****/
 String mDNS_name("ESP-");
@@ -69,9 +71,10 @@ int ntp_fail_count;
 
 /***** OBJECT INSTANTIATION  *****/
 WiFiUDP Udp;
+WiFiClient espClient;
+PubSubClient client(espClient);
 IPAddress serverIp;
-StaticJsonDocument<256> doc;
-//NTPClient timeClient(Udp, 3600*TIME_ZONE_OFFSET_HRS);
+StaticJsonDocument<256> doc; // Have to calculate how much memory have to allocate
 BLEScan* pBLEScan;
 
 /***** DEFINE CUSTOM CLASS  *****/
@@ -114,7 +117,6 @@ void setup() {
   Serial.printf("Board Type        : %s\n", ARDUINO_BOARD);
   Serial.printf("Board MAC Address : %s\n", WiFi.macAddress().c_str());
   Serial.printf("=============================================\n");
-  Serial.printf("Connecting To WiFi: %s", WIFI_SSID);
 
   //=====Wifi AND mDNS CONFIG BEGIN=====
   mDNS_name += WiFi.macAddress();
@@ -124,6 +126,7 @@ void setup() {
   //=====Wifi AND mDNS CONFIG END=====
   
   //=====Connect to Wifi BEGIN=====
+  Serial.printf("Connecting To WiFi: %s", WIFI_SSID);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED){
     delay(500);
@@ -133,8 +136,23 @@ void setup() {
   Serial.printf("connected: ");
   Serial.printf("%s, RSSI: %d\n", WiFi.localIP().toString().c_str(), wifi_rssi);
   //=====Connect to Wifi END=====
+
+  //=====MQTT SETUP BEGIN=====
+  Serial.printf("Setting MQTT      : ");
+  client.setServer(HOST_MDNS, MQTT_PORT); // setup mqtt server and port
+  client.setCallback(pubSubCallback); // setup mqtt broker callback function
+  while(!client.connected()){
+    delay(500);
+    client.connect(mDNS_name.c_str());
+    Serial.printf(".");
+  }
+  client.subscribe("anchor/restart");
+  client.subscribe("anchor/online-check");
+  Serial.printf("..Done.\n");
+  //=====MQTT SETUP END
   
   //=====Startup mDNS Service BEGIN=====
+  mqttSentStatus("Starting mDNS");
   Serial.printf("Starting mDNS     : %s", mDNS_name.c_str());
   if(!MDNS.begin(mDNS_name.c_str())) {
      Serial.printf("Error starting mDNS\n");
@@ -145,35 +163,24 @@ void setup() {
   //=====Startup mDNS Service END=====
   
   //=====Resolving HOST IP BEGIN=====
-  Serial.print("Resolving HOST    : " + String(HOST_NAME) + String(".local"));
-  while (serverIp.toString() == "0.0.0.0") {
-    //0.0.0.0 is (IP unset) for esp32
+  mqttSentStatus("Resolving HOST");
+  Serial.printf("Resolving HOST    : %s ", HOST_MDNS);
+  while(serverIp.toString() == IPAddress(INADDR_NONE).toString()) {
     delay(250);
     Serial.printf(".");
-    serverIp = MDNS.queryHost(HOST_NAME);
+    int result = WiFi.hostByName(HOST_MDNS, serverIp);
   }
   Serial.printf("resolved: %s\n", serverIp.toString().c_str());
   //=====Resolving HOST IP END=====
   
   //=====Sync time to HOST BEGIN=====
-  //timeClient.setPoolServerIP(serverIp);
-  //timeClient.setPoolServerName(NULL); // Because we use IP mode, server name must set to NULL
-  //timeClient.setUpdateInterval(NTP_UPDATE_INTERVAL_MS);
-  //timeClient.begin();
-  //DbgSerial.print("Sync Time To HOST : " + timeClient.getPoolServerIP().toString());
-  //while(!timeClient.updated()){
-  //  timeClient.update();
-  //  delay(1000);
-  //  DbgSerial.printf(".");
-  //}
-  //DbgSerial.printf("successed.\n");
-  //DbgSerial.printf("UTC               : %s\n", timeClient.getFormattedTime().c_str()); 
-  //DbgSerial.printf("UNIX Timestamp(ms): %llu\n" ,timeClient.getUTCEpochMillis());
+  mqttSentStatus("Sync Time To HOST");
   ntp_fail_count = 0;
   unsigned long log_time = millis();
-  NTP.setTimeZone (TZ_Asia_Taipei);
-  NTP.onNTPSyncEvent ([] (NTPEvent_t event) {ntpEvent = event; });
+  NTP.setTimeZone(TZ_Asia_Taipei);
+  NTP.onNTPSyncEvent([] (NTPEvent_t event) {ntpEvent = event;} ); // lambda function
   NTP.setNtpServerName(HOST_MDNS);
+  NTP.setInterval(5,60); //Default: shortInterval=15s, longInterval=1800s; both need >=10
   NTP.begin();
   
   Serial.printf("Sync Time To HOST : %s", HOST_MDNS);
@@ -183,7 +190,8 @@ void setup() {
       log_time = millis();
       Serial.printf(".");
       ntp_fail_count ++;
-      if(ntp_fail_count >30){ESP.restart();}
+      mqttSentStatus("Sync Time To HOST");
+      if(ntp_fail_count >30){ ESP.restart(); }
     }
     delay(0);
   }
@@ -206,7 +214,6 @@ void setup() {
   //=====Setup scaning device END=====
   // ^^^^^ BLE setup done. ^^^^^ //
   
-  //anchor_id = WiFi.macAddress().replace(":", "");
   setJsonDoc(DOC_INITIAL); // Initial JSON document
   
   // Send ready packet to HOST
@@ -215,10 +222,12 @@ void setup() {
   Udp.endPacket();
   
   digitalWrite(LED_BUILTIN, HIGH);
+  mqttSentStatus("Ready");
 }
 
 void loop() {
   if(WiFi.status() != WL_CONNECTED) ESP.restart();
+  if(!client.loop()) client.connect(mDNS_name.c_str());
   //timeClient.update();
   BLEScanResults foundDevices = pBLEScan->start(scanTime, false);
   pBLEScan->clearResults(); // Delete results fromBLEScan buffer to release memory
@@ -228,7 +237,7 @@ void loop() {
 
 /**
   * @brief JSON document setting function
-  * @param info type JsonDocType
+  * @param size_t incomingSize; type JsonDocType
   */
 void setJsonDoc(JsonDocType docType){
   if(docType == DOC_INITIAL)
@@ -265,4 +274,39 @@ void setJsonDoc(JsonDocType docType){
     doc["channel"]     = nullptr;
     doc["message"]     = nullptr;
   }
+}
+
+
+// 當設備發訊息給一個標題(topic)時，這段函式會被執行
+void pubSubCallback(String topic, byte* message, unsigned int length) {
+  Serial.print("Message arrived on topic: ");
+  Serial.print(topic);
+  Serial.print(". Message: ");
+  String messageTemp;
+  
+  for (int i = 0; i < length; i++) {
+    Serial.print((char)message[i]);
+    messageTemp += (char)message[i];
+  }
+  Serial.println();
+
+  // 假使收到訊息給主題 room/lamp, 可以檢查訊息是 on 或 off. 根據訊息開啟 GPIO
+  if(topic == "anchor/restart"){
+      Serial.print("Receive restart");
+      mqttSentStatus("Restart");
+      delay(500);
+      ESP.restart();
+  }
+  else if (topic == "anchor/online-check"){
+    mqttSentStatus("Online");
+    //client.publish("anchor/online-check-response", mDNS_name.c_str());
+  }
+  
+  Serial.println();
+}
+
+void mqttSentStatus(const char *msg){
+  String topic("anchor/status/");
+  topic += mDNS_name;
+  client.publish(topic.c_str(), msg);
 }

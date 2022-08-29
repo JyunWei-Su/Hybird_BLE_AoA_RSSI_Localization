@@ -1,8 +1,8 @@
 /**
- * @version 1.2.0
+ * @version 1.3.0
  * @author  Jyun-wei, Su
  * @author  Ming-Yan, Tsai
- * @date    2022/07/28
+ * @date    2022/08/29
  * @brief   brief description
  * @details 
  * @bug     ESP8266 mDNS advertise service actual work after entering loop()
@@ -50,8 +50,8 @@
 #endif
 
 #include <WiFiUdp.h>
+#include <PubSubClient.h>
 #include <ArduinoJson.h>
-//#include <NTPClient_Generic.h>
 #include <ESPNtpClient.h>
 
 /***** DEDINE SERIAL PORT *****/
@@ -79,6 +79,7 @@
 #define WIFI_SSID     "XPLR-AOA"
 #define WIFI_PASSWORD "12345678"
 #define UDP_PORT       4101
+#define MQTT_PORT      1883
 
 typedef enum JsonDocType
 {
@@ -94,11 +95,13 @@ typedef enum SerialType
 void setJsonDoc(JsonDocType docType);
 void SerialSwitchTo(SerialType serialType);
 void debug_incomingTemp(void);
+void pubSubCallback(String topic, byte* message, unsigned int length);
+void mqttSentStatus(const char *msg);
 
 /***** GLOBAL VARIABLE *****/
+size_t incomingSize;
 char incomingTemp[128];
 String mDNS_name("ESP-");
-size_t incomingSize;
 // doc variable
 char instance_id[16];
 char anchor_id[16];
@@ -111,12 +114,12 @@ int ntp_fail_count;
 
 /***** OBJECT INSTANTIATION  *****/
 WiFiUDP Udp;
+WiFiClient espClient;
+PubSubClient client(espClient);
 IPAddress serverIp;
 StaticJsonDocument<256> doc; // Have to calculate how much memory have to allocate
-//NTPClient timeClient(Udp, 3600*TIME_ZONE_OFFSET_HRS);
 
-void setup()
-{
+void setup() {
   //pinMode(LED_BUILTIN, OUTPUT);
   //digitalWrite(LED_BUILTIN, LOW);
   isDebugSerial = DEBUG_SERIAL_INIT_STATE;
@@ -138,7 +141,6 @@ void setup()
   DbgSerial.printf("Board MAC Address : %s\n", WiFi.macAddress().c_str());
   DbgSerial.printf("Default Serial    : %s\n" , isDebugSerial ? "DEBUG": "COMMUNIATE");
   DbgSerial.printf("=============================================\n");
-  DbgSerial.printf("Connecting To WiFi: %s", WIFI_SSID);
 
   //=====Wifi AND mDNS CONFIG BEGIN=====
   mDNS_name += WiFi.macAddress();
@@ -153,6 +155,7 @@ void setup()
   //=====Wifi AND mDNS CONFIG END=====
 
   //=====Connect to Wifi BEGIN=====
+  DbgSerial.printf("Connecting To WiFi: %s", WIFI_SSID);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED){
     delay(500);
@@ -162,8 +165,23 @@ void setup()
   DbgSerial.printf("connected: ");
   DbgSerial.printf("%s, RSSI: %d\n", WiFi.localIP().toString().c_str(), wifi_rssi);
   //=====Connect to Wifi END=====
+
+  //=====MQTT SETUP BEGIN=====
+  DbgSerial.printf("Setting MQTT      : ");
+  client.setServer(HOST_MDNS, MQTT_PORT); // setup mqtt server and port
+  client.setCallback(pubSubCallback); // setup mqtt broker callback function
+  while(!client.connected()){
+    delay(500);
+    client.connect(mDNS_name.c_str());
+    DbgSerial.printf(".");
+  }
+  client.subscribe("anchor/restart");
+  client.subscribe("anchor/online-check");
+  DbgSerial.printf("..Done.\n");
+  //=====MQTT SETUP END
   
   //=====Startup mDNS Service BEGIN=====
+  mqttSentStatus("Starting mDNS");
   DbgSerial.printf("Starting mDNS     : %s", mDNS_name.c_str());
   if(!MDNS.begin(mDNS_name.c_str())) {
      DbgSerial.printf("Error starting mDNS\n");
@@ -174,7 +192,7 @@ void setup()
   //=====Startup mDNS Service END=====
   
   //=====Resolving HOST IP BEGIN=====
-  //DbgSerial.printf("INADDR_NONE       : %s\n", IPAddress(INADDR_NONE).toString().c_str());
+  mqttSentStatus("Resolving HOST");
   DbgSerial.printf("Resolving HOST    : %s ", HOST_MDNS);
   while(serverIp.toString() == IPAddress(INADDR_NONE).toString()) {
     delay(250);
@@ -185,12 +203,14 @@ void setup()
   //=====Resolving HOST IP END=====
   
   //=====Sync time to HOST BEGIN=====
+  mqttSentStatus("Sync Time To HOST");
   ntp_fail_count = 0;
   unsigned long log_time = millis();
   NTP.setTimeZone(TZ_Asia_Taipei);
-  NTP.onNTPSyncEvent([] (NTPEvent_t event) {ntpEvent = event;}); // lambda function
+  NTP.onNTPSyncEvent([] (NTPEvent_t event) {ntpEvent = event;} ); // lambda function
+  NTP.setNtpServerName(HOST_MDNS);
   NTP.setInterval(5,60); //Default: shortInterval=15s, longInterval=1800s; both need >=10
-  NTP.begin(HOST_MDNS);
+  NTP.begin();
   
   DbgSerial.printf("Sync Time To HOST : %s", HOST_MDNS);
   while(ntpEvent.event != timeSyncd || NTP.getFirstSync() <= 0){
@@ -199,7 +219,8 @@ void setup()
       log_time = millis();
       DbgSerial.printf(".");
       ntp_fail_count ++;
-      if(ntp_fail_count >30){ESP.restart();}
+      mqttSentStatus("Sync Time To HOST");
+      if(ntp_fail_count >30){ ESP.restart(); }
     }
     delay(0);
   }
@@ -220,12 +241,13 @@ void setup()
   
   //digitalWrite(LED_BUILTIN, HIGH);
   SerialSwitchTo(COM_SERIAL);
+  mqttSentStatus("Ready");
 }
 
 
-void loop() 
-{
+void loop() {
   if(WiFi.status() != WL_CONNECTED) ESP.restart();
+  if(!client.loop()) client.connect(mDNS_name.c_str());
   //timeClient.update();
 #ifdef ESP8266
   MDNS.update(); // ESP8266 need to call MDNS.update();
@@ -253,8 +275,7 @@ void loop()
   * @brief JSON document setting function
   * @param document type JsonDocType
   */
-void setJsonDoc(JsonDocType docType)
-{
+void setJsonDoc(JsonDocType docType) {
   if(docType == DOC_INITIAL)
   {
     doc["type"]        = DEVICE_TYPE;
@@ -339,4 +360,40 @@ void SerialSwitchTo(SerialType serialType)
     Serial.swap();
 #endif
   }
+}
+
+// 當設備發訊息給一個標題(topic)時，這段函式會被執行
+void pubSubCallback(String topic, byte* message, unsigned int length) {
+  SerialSwitchTo(DBG_SERIAL);
+  DbgSerial.print("Message arrived on topic: ");
+  DbgSerial.print(topic);
+  DbgSerial.print(". Message: ");
+  String messageTemp;
+  
+  for (int i = 0; i < length; i++) {
+    DbgSerial.print((char)message[i]);
+    messageTemp += (char)message[i];
+  }
+  DbgSerial.println();
+
+  // 假使收到訊息給主題 room/lamp, 可以檢查訊息是 on 或 off. 根據訊息開啟 GPIO
+  if(topic == "anchor/restart"){
+      DbgSerial.print("Receive restart");
+      mqttSentStatus("Restart");
+      delay(500);
+      ESP.restart();
+  }
+  else if (topic == "anchor/online-check"){
+    mqttSentStatus("Online");
+    //client.publish("anchor/online-check-response", mDNS_name.c_str());
+  }
+  
+  DbgSerial.println();
+  SerialSwitchTo(COM_SERIAL);
+}
+
+void mqttSentStatus(const char *msg){
+  String topic("anchor/status/");
+  topic += mDNS_name;
+  client.publish(topic.c_str(), msg);
 }
