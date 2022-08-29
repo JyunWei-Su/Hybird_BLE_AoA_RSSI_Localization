@@ -1,5 +1,7 @@
 from asyncio.windows_events import NULL
+from concurrent.futures import thread
 from email.headerregistry import ContentTransferEncodingHeader
+from msilib import AMD64
 from re import T
 import secrets
 import sys
@@ -9,12 +11,18 @@ import psycopg2
 import warnings ## bypass psycopg2 connection warning
 from config import config
 import pandas as pd
-import numpy as np
-from numpy import linalg as la
+
+import cupy as np
+from cupy import linalg as cpla
+
+#import numpy as np
+from numpy import linalg as npla
 import pprint as pp
 import socket
 import json
 import os 
+import threading
+import time
 
 # Listen for incoming datagrams
     
@@ -23,6 +31,18 @@ from datetime import datetime
 # @see usage: https://www.delftstack.com/zh-tw/howto/python/python-ini-file/
 
 #filename = "anchor.ini"
+
+# https://stackoverflow.com/questions/287871/how-do-i-print-colored-text-to-the-terminal
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 # get the anchor config from config file
 def get_system_config(filename):
@@ -42,9 +62,6 @@ def get_measurement_data(system_config:dict, anchor_name:str, tag_name:str, star
     anchor_type = system_config[anchor_name]['type']
     anchor_id = system_config[anchor_name]['id']
     tag_id = system_config[tag_name]['id']
-
-    p0 = system_config[anchor_name]['p0']
-    gamma = system_config[anchor_name]['gamma']
 
     conn = None
     cur = None
@@ -84,8 +101,6 @@ def get_measurement_data(system_config:dict, anchor_name:str, tag_name:str, star
     measurement_data = {}
     # attributes data
     measurement_data['isAoA'] = isAoA
-    measurement_data['p0'] = p0
-    measurement_data['gamma'] = gamma
     # basic measurement
     measurement_data['basic'] = {}
     measurement_data['basic']['rssi'] = df['rssi_avg'][0] # <class 'numpy.float64'>
@@ -95,9 +110,8 @@ def get_measurement_data(system_config:dict, anchor_name:str, tag_name:str, star
     #pp.pprint(measurement_data)
     return measurement_data
 
-def cal_basic_R(system_config:dict, anchor_name:str, rssi):
-    p0 = system_config[anchor_name]['p0']
-    gamma = system_config[anchor_name]['gamma']
+def cal_basic_R_spec_parm(rssi, p0, gamma):
+    #print(rssi, p0, gamma)
     R = np.power(10, ((p0 - rssi) / gamma))
     # print('cal_R:', p0, rssi, gamma, R)
     # R = 10 ^ ((p0 - rssi) / gamma)
@@ -108,7 +122,7 @@ def generate_anchor(system_config:dict, anchor_name:str, basic_measure_data:dict
     anchor = []
     anchor.append({'R': basic_measure_data['R'], \
                    'coordinate': coordinate, \
-                   'K': la.norm(coordinate)})
+                   'K': cpla.norm(coordinate)})
     return anchor
 
 def generate_virtual_anchor(basic_measure_data:dict):
@@ -153,7 +167,7 @@ def virtual_anchor_coordinate_transform(system_config:dict, anchor_name:str, vir
         #print('virtual coord.:', virtual_anchor['coordinate'])
         temp['coordinate'] = transform_matrix @ virtual_anchor['coordinate'] + anchor_coordinate
         temp['transformed'] = True
-        temp['K'] = la.norm(temp['coordinate'])
+        temp['K'] = cpla.norm(temp['coordinate'])
         transformed.append(temp)
     
     return transformed
@@ -189,53 +203,162 @@ def generate_b(cal_anchor_list_sorted:list):
     return b
 
 
-system_config = get_system_config("system.ini")
-measurement_data = {}
-# pp.pprint(system_config)
-for anchor in ['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d']: #'anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'
-    print(f'====={anchor}=====')
-    try:
-        measurement_data[anchor] = get_measurement_data(system_config, anchor, 'tag-b', 1658824770000, 1658824790000)
-    except ValueError as ex:
-        print(f"{ex}")
-    # basic R
-    measurement_data[anchor]['basic']['R'] = cal_basic_R(system_config, anchor, measurement_data[anchor]['basic']['rssi'])
+# LOCK
+progress_lock = threading.Lock()
+result_lock = threading.Lock()
+
+def calculate(thread_num, argv_start, argv_end, results, progress):
+    time.sleep(thread_num)
+    enum_parm = []
+    #print('thread', thread_num, argv_start, argv_end)
+    for p0a in range(argv_start, argv_end, -1):
+        for p0b in range(-40, -60, -1):
+            for p0c in range(-40, -60, -1):
+                for p0d in range(-40, -60, -1):
+                    for gamma in range(15, 20, 1):
+                        enum_parm.append({'anchor-a': p0a, 'anchor-b': p0b, 'anchor-c': p0c, 'anchor-d': p0d, 'gamma': gamma})
+                        #print(count, ':', p0a, p0b, p0c, p0d, gamma)
+            #print('.', end='')
+        #print('.')
+
+    total = len(enum_parm)
+
+    system_config = get_system_config("system.ini")
+
+    start_time  = 1658824770000
+    end_time = 1658824790000
+    time_step = 100 # ms
+    # p點 理論值  4.75 7.75 1
+    # r點 理論值 16.75 7.75 1
+    # 精準度 2m
     
-    if measurement_data[anchor]['isAoA']: #xplr-aoa
-        measurement_data[anchor]['anchor'] = generate_virtual_anchor(measurement_data[anchor]['basic'])
-        #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
-        measurement_data[anchor]['anchor'] = virtual_anchor_coordinate_transform(system_config, anchor, measurement_data[anchor]['anchor'])
-        #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
-    else: #xplr-aoa
-        measurement_data[anchor]['anchor'] = generate_anchor(system_config, anchor, measurement_data[anchor]['basic'])
-    #pp.pprint(measurement_data)
+    x_bound = (3.75, 5.75)
+    y_bound = (6.75, 8.75)
+    z_bound = (0, 2)
+    cache = {}
 
-pp.pprint(measurement_data)
+    count = 0
+    for parm in enum_parm:
+        count += 1
+        if (count % 100) == 0:
+            progress_lock.acquire()
+            #print('thread', thread_num, argv_start, argv_end, str(count) +'/' + str(total))
+            progress[thread_num] = count / total
+            #print(progress[thread_num])
+            progress_lock.release()
 
-cal_anchor_list = extract_cal_anchor_list(measurement_data)
+        for sql_time in range(start_time, end_time, time_step):
+            measurement_data = {}
 
-#pp.pprint(cal_anchor_list)
-cal_anchor_list = sorted(cal_anchor_list, key=lambda x: x['R']) # sort using R https://note.nkmk.me/en/python-dict-list-sort/
+            for anchor in ['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d']: #'anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'
+                #print(anchor, sql_time)
+                #print(f'====={anchor}=====')
+                if (anchor + str(sql_time)) not in cache.keys():
+                    try:
+                        measurement_data[anchor] = get_measurement_data(system_config, anchor, 'tag-b', sql_time, sql_time + time_step)
+                        cache[anchor + str(sql_time)] = measurement_data[anchor]
+                        #print('.', end='')
+                    except ValueError as ex:
+                        print(f"{ex}")
+                else:
+                    measurement_data[anchor] = cache[anchor + str(sql_time)]
+                
+                # basic R
+                try:
+                    measurement_data[anchor]['basic']['R'] = cal_basic_R_spec_parm(measurement_data[anchor]['basic']['rssi'], parm[anchor] ,parm['gamma'])
+                except:
+                    continue
+                
+                if measurement_data[anchor]['isAoA']: #xplr-aoa
+                    measurement_data[anchor]['anchor'] = generate_virtual_anchor(measurement_data[anchor]['basic'])
+                    #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
+                    measurement_data[anchor]['anchor'] = virtual_anchor_coordinate_transform(system_config, anchor, measurement_data[anchor]['anchor'])
+                    #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
+                else: #xplr-aoa
+                    measurement_data[anchor]['anchor'] = generate_anchor(system_config, anchor, measurement_data[anchor]['basic'])
+                #pp.pprint(measurement_data)
 
-pp.pprint(cal_anchor_list)
+            #pp.pprint(measurement_data)
+            try:
+                cal_anchor_list = extract_cal_anchor_list(measurement_data)
+            except:
+                continue
 
-H = generate_H(cal_anchor_list)
-b = generate_b(cal_anchor_list)
-#print(H)
-#print(b)
-HT = H.T
-print('+' * 50)
-print(H)
-print('+' * 50)
-print(HT)
+            #pp.pprint(cal_anchor_list)
+            cal_anchor_list = sorted(cal_anchor_list, key=lambda x: x['R']) # sort using R https://note.nkmk.me/en/python-dict-list-sort/
 
-HTH_inv = la.inv(H.T @ H)
-print('+' * 50)
-print(HTH_inv)
+            #pp.pprint(cal_anchor_list)
 
-#x_hat = HTH_inv @ H.T @ b
-x_hat = HTH_inv @ H.T @ b
-print('+' * 50)
-print(x_hat)
+            H = generate_H(cal_anchor_list)
+            b = generate_b(cal_anchor_list)
+            HT = H.T
 
+            HTH_inv = cpla.inv(np.multiply(HT, H))
+            #HTH_inv = la.inv(H.T @ H)
+            x_hat = np.multiply(HTH_inv, HT)
+            x_hat = np.multiply(x_hat, b)
+            #x_hat = HTH_inv @ H.T @ b
+            
+            #print(x_hat)
+            x = x_hat[0]
+            y = x_hat[1]
+            z = x_hat[2]
+            if x_bound[0] <= x <= x_bound[1] and \
+               y_bound[0] <= y <= y_bound[1] and \
+               z_bound[0] <= z <= z_bound[1] :
+                result_lock.acquire()
+                results.append(str(parm) + ',' + str(sql_time) + str(sql_time + time_step) + ',' + str(x) + ',' + str(y) + ',' + str(z) )
+                result_lock.release()
+            #os.system('pause')
+            #else:
+                #print('.', end='')
+        
+
+    progress_lock.acquire()
+    progress[thread_num] = 1.0
+    progress_lock.release()
+
+def monitor(total_threads, progress):
+    for i in range(total_threads):
+        print(f'thrd{i}\t', end='')
+    print('')
+    cont = 0
+    dym = ['-', '\\', '|', '/']
+
+    while True:
+        for i in range(total_threads):
+            if(progress[i] < 0.999):
+                print(bcolors.WARNING, end='')
+            else:
+                print(bcolors.OKGREEN, end='')
+            print('{:.1f}%'.format(100 * progress[i]), end='\t')
+        cont += 1
+        if cont >= 4:
+            cont = 0
+        print(bcolors.ENDC + dym[cont] + '\r', end='')
+        if sum(progress) >= total_threads * 0.9999:
+            break
+        time.sleep(3)
+
+# 建立 20 個子執行緒
+print('p point')
+total_threads = 20
+threads = [None] * total_threads
+results = []
+progress = [0.0] * total_threads
+monitor_thread = threading.Thread(target = monitor, args = (total_threads, progress,))
+monitor_thread.start()
+for i in range(total_threads):
+    threads[i] = threading.Thread(target = calculate, args = (i, -(40 + 1 * i), -(41 + 1 * i), results, progress,))
+    threads[i].start()
+
+
+for i in range(total_threads):
+    threads[i].join()
+monitor_thread.join()
+
+print('\n++++++++++++++++++++++ Result ++++++++++++++++++++++++++')
+with open("result_p.log", "w") as log_file:
+    pp.pprint(results,  log_file)
+print('\n++++++++++++++++++++++ Done ++++++++++++++++++++++++++')
 # calculate

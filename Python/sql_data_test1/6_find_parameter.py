@@ -1,5 +1,6 @@
 from asyncio.windows_events import NULL
 from email.headerregistry import ContentTransferEncodingHeader
+from msilib import AMD64
 from re import T
 import secrets
 import sys
@@ -9,8 +10,13 @@ import psycopg2
 import warnings ## bypass psycopg2 connection warning
 from config import config
 import pandas as pd
+import cupy as cp
+from cupy import linalg as la
+cp.cuda.Device(0).use()
+print('Using cupy')
 import numpy as np
-from numpy import linalg as la
+#from numpy import linalg as npla
+print('Using numpy')
 import pprint as pp
 import socket
 import json
@@ -42,9 +48,6 @@ def get_measurement_data(system_config:dict, anchor_name:str, tag_name:str, star
     anchor_type = system_config[anchor_name]['type']
     anchor_id = system_config[anchor_name]['id']
     tag_id = system_config[tag_name]['id']
-
-    p0 = system_config[anchor_name]['p0']
-    gamma = system_config[anchor_name]['gamma']
 
     conn = None
     cur = None
@@ -84,8 +87,6 @@ def get_measurement_data(system_config:dict, anchor_name:str, tag_name:str, star
     measurement_data = {}
     # attributes data
     measurement_data['isAoA'] = isAoA
-    measurement_data['p0'] = p0
-    measurement_data['gamma'] = gamma
     # basic measurement
     measurement_data['basic'] = {}
     measurement_data['basic']['rssi'] = df['rssi_avg'][0] # <class 'numpy.float64'>
@@ -95,9 +96,8 @@ def get_measurement_data(system_config:dict, anchor_name:str, tag_name:str, star
     #pp.pprint(measurement_data)
     return measurement_data
 
-def cal_basic_R(system_config:dict, anchor_name:str, rssi):
-    p0 = system_config[anchor_name]['p0']
-    gamma = system_config[anchor_name]['gamma']
+def cal_basic_R_spec_parm(rssi, p0, gamma):
+    #print(rssi, p0, gamma)
     R = np.power(10, ((p0 - rssi) / gamma))
     # print('cal_R:', p0, rssi, gamma, R)
     # R = 10 ^ ((p0 - rssi) / gamma)
@@ -188,54 +188,95 @@ def generate_b(cal_anchor_list_sorted:list):
         b[index - 1] =  0.5 * (ki ** 2 - kr ** 2 - ri ** 2 + rr ** 2)
     return b
 
+enum_parm = []
+for p0a in range(-40, -60, -1):
+    for p0b in range(-40, -60, -1):
+        for p0c in range(-40, -60, -1):
+            for p0d in range(-40, -60, -1):
+                for gamma in range(15,20, 1):
+                    enum_parm.append({'anchor-a': p0a, 'anchor-b': p0b, 'anchor-c': p0c, 'anchor-d': p0d, 'gamma': gamma})
+                    #print(count, ':', p0a, p0b, p0c, p0d, gamma)
+        print('.', end='')
+    print('.')
+
+total = len(enum_parm)
 
 system_config = get_system_config("system.ini")
-measurement_data = {}
-# pp.pprint(system_config)
-for anchor in ['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d']: #'anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'
-    print(f'====={anchor}=====')
-    try:
-        measurement_data[anchor] = get_measurement_data(system_config, anchor, 'tag-b', 1658824770000, 1658824790000)
-    except ValueError as ex:
-        print(f"{ex}")
-    # basic R
-    measurement_data[anchor]['basic']['R'] = cal_basic_R(system_config, anchor, measurement_data[anchor]['basic']['rssi'])
-    
-    if measurement_data[anchor]['isAoA']: #xplr-aoa
-        measurement_data[anchor]['anchor'] = generate_virtual_anchor(measurement_data[anchor]['basic'])
-        #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
-        measurement_data[anchor]['anchor'] = virtual_anchor_coordinate_transform(system_config, anchor, measurement_data[anchor]['anchor'])
-        #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
-    else: #xplr-aoa
-        measurement_data[anchor]['anchor'] = generate_anchor(system_config, anchor, measurement_data[anchor]['basic'])
-    #pp.pprint(measurement_data)
 
-pp.pprint(measurement_data)
+start_time  = 1658824770000
+end_time = 1658824790000
+time_step = 100 # ms
+x_bound = (0, 18.5)
+y_bound = (0, 12.5)
+z_bound = (0, 20)
+cache = {}
 
-cal_anchor_list = extract_cal_anchor_list(measurement_data)
+count = 0
+for parm in enum_parm:
+    for time in range(start_time, end_time, time_step):
+        measurement_data = {}
 
-#pp.pprint(cal_anchor_list)
-cal_anchor_list = sorted(cal_anchor_list, key=lambda x: x['R']) # sort using R https://note.nkmk.me/en/python-dict-list-sort/
+        for anchor in ['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d']: #'anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'
+            #print(anchor, time)
+            #print(f'====={anchor}=====')
+            if (anchor + str(time)) not in cache.keys():
+                try:
+                    measurement_data[anchor] = get_measurement_data(system_config, anchor, 'tag-b', time, time + time_step)
+                    cache[anchor + str(time)] = measurement_data[anchor]
+                    print('.', end='')
+                except ValueError as ex:
+                    print(f"{ex}")
+            else:
+                measurement_data[anchor] = cache[anchor + str(time)]
+            
+            # basic R
+            try:
+                measurement_data[anchor]['basic']['R'] = cal_basic_R_spec_parm(measurement_data[anchor]['basic']['rssi'], parm[anchor] ,parm['gamma'])
+            except:
+                continue
+            
+            if measurement_data[anchor]['isAoA']: #xplr-aoa
+                measurement_data[anchor]['anchor'] = generate_virtual_anchor(measurement_data[anchor]['basic'])
+                #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
+                measurement_data[anchor]['anchor'] = virtual_anchor_coordinate_transform(system_config, anchor, measurement_data[anchor]['anchor'])
+                #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
+            else: #xplr-aoa
+                measurement_data[anchor]['anchor'] = generate_anchor(system_config, anchor, measurement_data[anchor]['basic'])
+            #pp.pprint(measurement_data)
 
-pp.pprint(cal_anchor_list)
+        #pp.pprint(measurement_data)
+        try:
+            cal_anchor_list = extract_cal_anchor_list(measurement_data)
+        except:
+            continue
 
-H = generate_H(cal_anchor_list)
-b = generate_b(cal_anchor_list)
-#print(H)
-#print(b)
-HT = H.T
-print('+' * 50)
-print(H)
-print('+' * 50)
-print(HT)
+        #pp.pprint(cal_anchor_list)
+        cal_anchor_list = sorted(cal_anchor_list, key=lambda x: x['R']) # sort using R https://note.nkmk.me/en/python-dict-list-sort/
 
-HTH_inv = la.inv(H.T @ H)
-print('+' * 50)
-print(HTH_inv)
+        #pp.pprint(cal_anchor_list)
 
-#x_hat = HTH_inv @ H.T @ b
-x_hat = HTH_inv @ H.T @ b
-print('+' * 50)
-print(x_hat)
+        H = generate_H(cal_anchor_list)
+        b = generate_b(cal_anchor_list)
+        HT = H.T
 
+        HTH_inv = la.inv(H.T @ H)
+
+        x_hat = HTH_inv @ H.T @ b
+        
+        #print(x_hat)
+        x = x_hat[0]
+        y = x_hat[1]
+        z = x_hat[2]
+        if x_bound[0] <= x <= x_bound[1] and \
+           y_bound[0] <= y <= y_bound[1] and \
+           z_bound[0] <= z <= z_bound[1] :
+            print('\n', '-'*10, parm, time)
+            print(x, y, z)
+        #os.system('pause')
+        #else:
+            #print('.', end='')
+    count += 1
+    if (count % 100) == 0:
+        print(str(count) +'/' + str(total))
+print('\n++++++++++++++++++++++ Done ++++++++++++++++++++++++++')
 # calculate
