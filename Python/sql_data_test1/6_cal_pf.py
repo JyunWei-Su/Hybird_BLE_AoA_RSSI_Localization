@@ -1,7 +1,11 @@
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+
 from asyncio.windows_events import NULL
 from email.headerregistry import ContentTransferEncodingHeader
 from re import T
 import secrets
+from shutil import move
 import sys
 from tokenize import group
 from django import conf
@@ -10,19 +14,124 @@ import warnings ## bypass psycopg2 connection warning
 from config import config
 import pandas as pd
 import numpy as np
+from numpy.random import randn, random, uniform, multivariate_normal, seed
 from numpy import linalg as la
+import scipy.stats
 import pprint as pp
 import socket
 import json
-import os 
+import os
 
-# Listen for incoming datagrams
+# pf ex: https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python/blob/master/12-Particle-Filters.ipynb
+from filterpy.monte_carlo import stratified_resample, residual_resample
+import matplotlib as mpl
+import matplotlib.pyplot as plt
     
 import configparser
 from datetime import datetime
 # @see usage: https://www.delftstack.com/zh-tw/howto/python/python-ini-file/
 
 #filename = "anchor.ini"
+
+
+class ParticleFilter(object):
+
+    def __init__(self, N, x_dim, y_dim):
+        self.particles = np.empty((N, 3))  # x, y, heading
+        self.N = N
+        self.x_dim = x_dim
+        self.y_dim = y_dim
+
+        # distribute particles randomly with uniform weight
+        self.weights = np.empty(N)
+        self.weights.fill(1./N)
+        self.particles[:, 0] = uniform(0, x_dim, size=N)   # x
+        self.particles[:, 1] = uniform(0, y_dim, size=N)   # y
+        self.particles[:, 2] = uniform(0, 2*np.pi, size=N) # w
+
+
+    def predict(self, u, std):
+        """ move according to control input u with noise std"""
+
+        self.particles[:, 2] += u[0] + randn(self.N) * std[0]
+        self.particles[:, 2] %= 2 * np.pi
+
+        d = u[1] + randn(self.N)
+        self.particles[:, 0] += np.cos(self.particles[:, 2]) * d
+        self.particles[:, 1] += np.sin(self.particles[:, 2]) * d
+
+        self.particles[:, 0:2] += u + randn(self.N, 2) * std
+
+
+    def weight(self, z, var):
+        dist = np.sqrt((self.particles[:, 0] - z[0])**2 +
+                       (self.particles[:, 1] - z[1])**2)
+
+        # simplification assumes variance is invariant to world projection
+        n = scipy.stats.norm(0, np.sqrt(var))
+        prob = n.pdf(dist)
+
+        # particles far from a measurement will give us 0.0 for a probability
+        # due to floating point limits. Once we hit zero we can never recover,
+        # so add some small nonzero value to all points.
+        prob += 1.e-12
+        self.weights += prob
+        self.weights /= sum(self.weights) # normalize
+
+
+    def neff(self):
+        return 1. / np.sum(np.square(self.weights))
+
+
+    def resample(self):
+        p = np.zeros((self.N, 3))
+        w = np.zeros(self.N)
+
+        cumsum = np.cumsum(self.weights)
+        for i in range(self.N):
+            index = np.searchsorted(cumsum, random())
+            p[i] = self.particles[index]
+            w[i] = self.weights[index]
+
+        self.particles = p
+        self.weights.fill(1.0 / self.N)
+
+
+    def estimate(self):
+        """ returns mean and variance """
+        pos = self.particles[:, 0:2]
+        mu = np.average(pos, weights=self.weights, axis=0)
+        var = np.average((pos - mu)**2, weights=self.weights, axis=0)
+
+        return mu, var
+
+def plot_pf(pf, xlim=100, ylim=100, weights=True):
+
+    if weights:
+        a = plt.subplot(221)
+        a.cla()
+
+        plt.xlim(0, ylim)
+        #plt.ylim(0, 1)
+        a.set_yticklabels('')
+        plt.scatter(pf.particles[:, 0], pf.weights, marker='.', s=1, color='k')
+        a.set_ylim(bottom=0)
+
+        a = plt.subplot(224)
+        a.cla()
+        a.set_xticklabels('')
+        plt.scatter(pf.weights, pf.particles[:, 1], marker='.', s=1, color='k')
+        plt.ylim(0, xlim)
+        a.set_xlim(left=0)
+        #plt.xlim(0, 1)
+
+        a = plt.subplot(223)
+        a.cla()
+    else:
+        plt.cla()
+    plt.scatter(pf.particles[:, 0], pf.particles[:, 1], marker='.', s=1, color='k')
+    plt.xlim(0, xlim)
+    plt.ylim(0, ylim)
 
 # get the anchor config from config file
 def get_system_config(filename):
@@ -188,54 +297,94 @@ def generate_b(cal_anchor_list_sorted:list):
         b[index - 1] =  0.5 * (ki ** 2 - kr ** 2 - ri ** 2 + rr ** 2)
     return b
 
-
-system_config = get_system_config("system.ini")
-measurement_data = {}
-# pp.pprint(system_config)
-for anchor in ['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d']: #'anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'
-    print(f'====={anchor}=====')
-    try:
-        measurement_data[anchor] = get_measurement_data(system_config, anchor, 'tag-b', 1658824770000, 1658824790000)
-    except ValueError as ex:
-        print(f"{ex}")
-    # basic R
-    measurement_data[anchor]['basic']['R'] = cal_basic_R(system_config, anchor, measurement_data[anchor]['basic']['rssi'])
-    
-    if measurement_data[anchor]['isAoA']: #xplr-aoa
-        measurement_data[anchor]['anchor'] = generate_virtual_anchor(measurement_data[anchor]['basic'])
-        #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
-        measurement_data[anchor]['anchor'] = virtual_anchor_coordinate_transform(system_config, anchor, measurement_data[anchor]['anchor'])
-        #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
-    else: #esp32
-        measurement_data[anchor]['anchor'] = generate_anchor(system_config, anchor, measurement_data[anchor]['basic'])
+def cal_location_once(anchors:list, tag:str, start_time_ms:int, end_time_ms:int):
+    for anchor in ['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d']: #'anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'
+        #print(f'====={anchor}=====')
+        try:
+            measurement_data[anchor] = get_measurement_data(system_config, anchor, tag, start_time_ms, end_time_ms)
+        except ValueError as ex:
+            print(f"{ex}")
+        # basic R
+        measurement_data[anchor]['basic']['R'] = cal_basic_R(system_config, anchor, measurement_data[anchor]['basic']['rssi'])
+        
+        if measurement_data[anchor]['isAoA']: #xplr-aoa
+            measurement_data[anchor]['anchor'] = generate_virtual_anchor(measurement_data[anchor]['basic'])
+            #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
+            measurement_data[anchor]['anchor'] = virtual_anchor_coordinate_transform(system_config, anchor, measurement_data[anchor]['anchor'])
+            #print('Shape check:', np.shape(measurement_data[anchor]['anchor'][0]['coordinate']))
+        else: #esp32
+            measurement_data[anchor]['anchor'] = generate_anchor(system_config, anchor, measurement_data[anchor]['basic'])
+        #pp.pprint(measurement_data)
     #pp.pprint(measurement_data)
 
-pp.pprint(measurement_data)
+    cal_anchor_list = extract_cal_anchor_list(measurement_data)
 
-cal_anchor_list = extract_cal_anchor_list(measurement_data)
+    #pp.pprint(cal_anchor_list)
+    cal_anchor_list = sorted(cal_anchor_list, key=lambda x: x['R']) # sort using R https://note.nkmk.me/en/python-dict-list-sort/
 
-#pp.pprint(cal_anchor_list)
-cal_anchor_list = sorted(cal_anchor_list, key=lambda x: x['R']) # sort using R https://note.nkmk.me/en/python-dict-list-sort/
+    #pp.pprint(cal_anchor_list)
 
-pp.pprint(cal_anchor_list)
+    H = generate_H(cal_anchor_list)
+    b = generate_b(cal_anchor_list)
+    #print(H)
+    #print(b)
+    HT = H.T
+    #print('+' * 50)
+    #print(H)
+    #print('+' * 50)
+    #print(HT)
 
-H = generate_H(cal_anchor_list)
-b = generate_b(cal_anchor_list)
-#print(H)
-#print(b)
-HT = H.T
-print('+' * 50)
-print(H)
-print('+' * 50)
-print(HT)
+    HTH_inv = la.inv(H.T @ H)
+    #print('+' * 50)
+    #print(HTH_inv)
 
-HTH_inv = la.inv(H.T @ H)
-print('+' * 50)
-print(HTH_inv)
+    #x_hat = HTH_inv @ H.T @ b
+    x_hat = HTH_inv @ H.T @ b
+    #print('+' * 50)
+    print(x_hat)
+    return x_hat
 
-#x_hat = HTH_inv @ H.T @ b
-x_hat = HTH_inv @ H.T @ b
-print('+' * 50)
-print(x_hat)
+# =====================SYSTEM MAIN========================
 
-# calculate
+# 讀取系統配置
+system_config = get_system_config("system.ini")
+measurement_data = {}
+
+# test
+x_cal_pre = None
+x_cal_now = None
+
+
+N = 3000
+pf = ParticleFilter(N, 18.5, 12.5)
+z = np.array([4.75, 7.75]) 
+print(z)
+#os.system('pause')
+#plot(pf, weights=False)
+
+time_step = 1000
+
+for time in range(1658824770000, 1658824790000, time_step):
+    x_cal_pre = cal_location_once(['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'], 'tag-b', time - time_step, time)
+    x_cal_now = cal_location_once(['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'], 'tag-b', time, time + time_step)
+    
+    z[0] = x_cal_pre[0]
+    z[1] = x_cal_pre[1]
+
+    move_vector = x_cal_now - x_cal_pre
+    move_vector = move_vector.T
+    move_vector = (move_vector[0][0], move_vector[0][1])
+    print(move_vector)
+
+    pf.predict(move_vector, (0.2, 0.2)) # control input u (移動)
+    pf.weight(z=z, var=.8)
+    pf.resample()
+
+    mu, var = pf.estimate()
+    plot_pf(pf, 18.5, 12.5, weights=False)
+    plt.scatter(mu[0], mu[1], color='g', s=100, label="PF")
+    #理論值  4.75 7.75 1
+    plt.scatter(4.75, 7.75, marker='x', color='r', s=180, label="True", lw=3)
+    plt.legend(scatterpoints=1)
+    plt.tight_layout()
+    plt.pause(1)
