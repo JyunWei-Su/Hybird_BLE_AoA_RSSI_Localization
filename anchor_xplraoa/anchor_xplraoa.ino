@@ -209,7 +209,8 @@ void setup() {
   NTP.setTimeZone(TZ_Asia_Taipei);
   NTP.onNTPSyncEvent([] (NTPEvent_t event) {ntpEvent = event;} ); // lambda function
   NTP.setNtpServerName(HOST_MDNS);
-  NTP.setInterval(5,60); //Default: shortInterval=15s, longInterval=1800s; both need >=10
+  NTP.setInterval(5,60); // Default: shortInterval=15s, longInterval=1800s; both need >=10
+  NTP.setMinSyncAccuracy(5000); // Default: 5000us
   NTP.begin();
   
   DbgSerial.printf("Sync Time To HOST : %s", HOST_MDNS);

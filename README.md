@@ -42,11 +42,11 @@ used the option Run -> Add Configuration (or Open configuration, if available) T
     * 將 line 607 下新增一行 `actualInterval = ntpTimeout + 500;`
 
 ## id-name mapping table
-|       type        |   name   |      id      |
-|:-----------------:|:--------:|:------------:|
-| rssi+aoa:xplr-aoa | anchor-a | 6C1DEBA097F3 |
-| rssi+aoa:xplr-aoa | anchor-b | 6C1DEBA097FA |
-|    rssi:esp32     | anchor-c | B8D61A822CAC |
-|    rssi:esp32     | anchor-d | 24D7EB0B2004 |
-|        tag        |  tag-a   | 6C1DEBA42193 |
-|        tag        |  tag-b   | 6C1DEBA41680 |
+|       type        |   name   |      id      |      esp-mac     |
+|:-----------------:|:--------:|:------------:|:----------------:|
+| rssi+aoa:xplr-aoa | anchor-a | 6C1DEBA097F3 | ESP-2CF432182C1F |
+| rssi+aoa:xplr-aoa | anchor-b | 6C1DEBA097FA |                  |
+|    rssi:esp32     | anchor-c | B8D61A822CAC | ESP-B8D61A822CAC |
+|    rssi:esp32     | anchor-d | 24D7EB0B2004 | ESP-24D7EB0B2004 |
+|        tag        |  tag-a   | 6C1DEBA42193 |                  |
+|        tag        |  tag-b   | 6C1DEBA41680 |                  |
