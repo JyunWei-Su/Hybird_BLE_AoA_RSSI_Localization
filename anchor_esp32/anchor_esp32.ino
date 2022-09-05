@@ -7,15 +7,14 @@
  * @bug     none
  * @exception Unexpected "scan_evt timeout" on serial monitor
  *            @see https://github.com/espressif/arduino-esp32/issues/5860
- * @see Beacon scan exapmle: https://github.com/pcbreflux/espressif/blob/master/esp32/arduino/sketchbook/ESP32_BLE_beaconscan/ESP32_BLE_beaconscan.ino
- * @see BLEAdvertisedDevice usage: https://github.com/espressif/arduino-esp32/blob/master/libraries/BLE/src/BLEAdvertisedDevice.h
- * @Eddystone protocol specification: https://github.com/google/eddystone/blob/master/protocol-specification.md
- * 
-  library: https://github.com/espressif/arduino-esp32/tree/master/libraries
- * @see scan duration https://esp32.com/viewtopic.php?t=2291
- * @note     @see https://github.com/espressif/arduino-esp32/pull/3995 
-   Library had been update, so that need to add the second parameter: wantDuplicates
- * @see Calculate how much memory have to allocate to the JSON document using online tool: https://arduinojson.org/v6/assistant 
+ * @see  Beacon scan exapmle: https://github.com/pcbreflux/espressif/blob/master/esp32/arduino/sketchbook/ESP32_BLE_beaconscan/ESP32_BLE_beaconscan.ino
+ * @see  BLEAdvertisedDevice usage: https://github.com/espressif/arduino-esp32/blob/master/libraries/BLE/src/BLEAdvertisedDevice.h
+ * @see  Eddystone protocol specification: https://github.com/google/eddystone/blob/master/protocol-specification.md
+ * @note library https://github.com/espressif/arduino-esp32/tree/master/libraries
+ * @see  scan duration https://esp32.com/viewtopic.php?t=2291
+ * @note Library had been update, so that need to add the second parameter: wantDuplicates
+ *       @see https://github.com/espressif/arduino-esp32/pull/3995  
+ * @see  Calculate how much memory have to allocate to the JSON document using online tool: https://arduinojson.org/v6/assistant 
  * @note Make sure NTPClient_Generic.h only included in main .ino to avoid `Multiple Definitions` Linker Error
  *       @see https://github.com/khoih-prog/NTPClient_Generic
 */
@@ -291,7 +290,7 @@ void pubSubCallback(String topic, byte* message, unsigned int length) {
   }
   Serial.println();
 
-  // 假使收到訊息給主題 room/lamp, 可以檢查訊息是 on 或 off. 根據訊息開啟 GPIO
+  // 
   if(topic == "anchor/restart"){
       Serial.print("Receive restart");
       mqttSentStatus("Restart");
