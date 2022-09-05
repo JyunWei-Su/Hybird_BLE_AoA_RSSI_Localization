@@ -53,7 +53,7 @@ class ParticleFilter(object):
     def predict(self, u, std):
         """ move according to control input u with noise std"""
 
-        self.particles[:, 2] += u[0] + randn(self.N) * std[0]
+        self.particles[:, 2] += u[0]
         self.particles[:, 2] %= 2 * np.pi
 
         d = u[1] + randn(self.N)
@@ -357,7 +357,11 @@ x_cal_now = None
 
 N = 3000
 pf = ParticleFilter(N, 18.5, 12.5)
+
 z = np.array([4.75, 7.75]) 
+z = cal_location_once(['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'], 'tag-b', 1658824770000 - 1000, 1658824770000)
+z = z[0:2].T
+z = z[0]
 print(z)
 #os.system('pause')
 #plot(pf, weights=False)
@@ -368,8 +372,8 @@ for time in range(1658824770000, 1658824790000, time_step):
     x_cal_pre = cal_location_once(['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'], 'tag-b', time - time_step, time)
     x_cal_now = cal_location_once(['anchor-a', 'anchor-b', 'anchor-c', 'anchor-d'], 'tag-b', time, time + time_step)
     
-    z[0] = x_cal_pre[0]
-    z[1] = x_cal_pre[1]
+    #z[0] = x_cal_pre[0]
+    #z[1] = x_cal_pre[1]
 
     move_vector = x_cal_now - x_cal_pre
     move_vector = move_vector.T
@@ -377,10 +381,10 @@ for time in range(1658824770000, 1658824790000, time_step):
     print(move_vector)
 
     pf.predict(move_vector, (0.2, 0.2)) # control input u (移動)
-    pf.weight(z=z, var=.8)
-    pf.resample()
-
+    pf.weight(z=z, var=.8) #計算權重
+    pf.resample() #
     mu, var = pf.estimate()
+
     plot_pf(pf, 18.5, 12.5, weights=False)
     plt.scatter(mu[0], mu[1], color='g', s=100, label="PF")
     #理論值  4.75 7.75 1
