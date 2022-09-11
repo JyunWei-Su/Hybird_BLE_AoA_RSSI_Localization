@@ -4,6 +4,9 @@ import psycopg2
 from config import config
 import pandas as pd
 import numpy as np
+import pprint as pp
+import seaborn as sns
+import matplotlib.pyplot as plt
 import socket
 import json
 import os 
@@ -17,13 +20,17 @@ from datetime import datetime
 #filename = "anchor.ini"
 
 
-def get_anchor_config(filename):
+def get_system_config(filename):
     config = configparser.ConfigParser()
     config.read(filename)
     config_dict = config._sections
-    for anchor in [section for section in config.sections() if 'anchor' in section]:
-        for key in ['coordinate', 'norm_vector', 'anim_vector', 'elev_vector', 'const']:
-            config_dict[anchor][key] = eval(config_dict[anchor][key])
+    for instance in [section for section in config.sections() if 'anchor' in section or 'tag' in section]:
+        if 'eval_keys' in config_dict[instance]:
+            config_dict[instance]['eval_keys'] = eval(config_dict[instance]['eval_keys'])
+            for key in config_dict[instance]['eval_keys']:
+                config_dict[instance][key] = eval(config_dict[instance][key])
+        else:
+            print(f'Error with config file(section: {instance}).')
     return config_dict
 
 def get_measurement_data(anchor_config:dict, anchor_name:str, start_time:int, end_time:int): # time format in second
@@ -69,24 +76,42 @@ def get_measurement_data(anchor_config:dict, anchor_name:str, start_time:int, en
     return df
 
 
-anchor_config = get_anchor_config("anchor.ini")
-print(anchor_config)
+anchor_config = get_system_config("system.ini")
+#pp.pprint(anchor_config)
 
 measurement_data = None
 try:
-    measurement_data = get_measurement_data(anchor_config, 'anchor-b', 1657825678, 1657856078)
+    measurement_data = get_measurement_data(anchor_config, 'anchor-a', 1662611421, 1662611441)
 except ValueError as ex:
     print(f"{ex}")
+#print(measurement_data)
 measurement_data['label'] = measurement_data['unix_time'] // 1000 # 如果要切更細??
-print(measurement_data)
 measurement_data.drop(columns='unix_time', inplace=True) 
 measurement_data = measurement_data[['label','rssi','azimuth','elevation']] #swap order
+
+angle = '-80'
+mean = measurement_data['elevation'].mean()
+error = int(angle) - mean
+fig, ax = plt.subplots()
+fig.set_size_inches(8,2.5)
+ax.clear()
+ax.set_title(angle + '°')
+ax.set_xlim([-90,90])
+ax.set_ylim([0, 1])
+ax.text(-80,0.9,s = ('error = %.2f' %error),fontsize = 14)
+#plt.axvline(x = angle,color = 'lawngreen')
+plt.axvline(x = mean,color = 'red')
+sns.histplot(data = measurement_data['elevation'], stat="density", ax = ax)
+plt.savefig('result_0908/elevation_' + angle + '°.png' )
+plt.pause(3)
+#measurement_data.to_csv('result_0908.csv', mode='a', index=True, header=True)
 #cut_range = np.arange(1657845678000, 1657845878000, 1000)
 #segments = pd.cut(measurement_data['unix_time'], cut_range)
 #print(segments)
-grouped = measurement_data.groupby('label')
-print(type(grouped.mean()))
-print(grouped.mean() , grouped.std())
+
+#grouped = measurement_data.groupby('label')
+#print(type(grouped.mean()))
+#print(grouped.mean() , grouped.std())
 
 # R = 10 ^ ((P0-Pi) / gamma)
 #xplr-aoa P0= -56.776; gamma= 1.7525
