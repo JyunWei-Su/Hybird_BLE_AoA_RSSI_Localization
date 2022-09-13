@@ -1,4 +1,5 @@
 from re import T
+from sqlite3 import Timestamp
 from tokenize import group
 import psycopg2
 from config import config
@@ -10,6 +11,7 @@ import matplotlib.pyplot as plt
 import socket
 import json
 import os 
+import csv
 
 # Listen for incoming datagrams
     
@@ -59,11 +61,11 @@ def get_measurement_data(anchor_config:dict, anchor_name:str, start_time:int, en
 
         # https://stackoverflow.com/questions/27884268/return-pandas-dataframe-from-postgresql-query-with-sqlalchemy
         df = pd.read_sql_query(f"SELECT unix_time, rssi, azimuth, elevation \
-                                 FROM measurement WHERE anchor_id='{id}' AND instance_id='6C1DEBA41680' \
+                                 FROM measurement WHERE anchor_id='{id}' AND instance_id='6C1DEBA42193' \
                                  AND unix_time BETWEEN {start_time_ms} AND {end_time_ms} \
                                  ORDER BY unix_time asc",con = conn)
         # or SELECT * FROM measurement WHERE anchor_id='6C1DEBA097FA' AND to_timestamp(unix_time::double precision /1000) BETWEEN timestamp '2022-07-14 23:28:20.000' AND timestamp '2022-07-15 23:28:30.000';
-        print(df)
+        #print(df)
         #os.system('pause')
         cur.close()
         if conn is not None:
@@ -79,31 +81,37 @@ def get_measurement_data(anchor_config:dict, anchor_name:str, start_time:int, en
 anchor_config = get_system_config("system.ini")
 #pp.pprint(anchor_config)
 
-measurement_data = None
-try:
-    measurement_data = get_measurement_data(anchor_config, 'anchor-a', 1662611421, 1662611441)
-except ValueError as ex:
-    print(f"{ex}")
-#print(measurement_data)
-measurement_data['label'] = measurement_data['unix_time'] // 1000 # 如果要切更細??
-measurement_data.drop(columns='unix_time', inplace=True) 
-measurement_data = measurement_data[['label','rssi','azimuth','elevation']] #swap order
+time_list =  [1662972623,1662972688,1662972820,1662972889,1662972974,1629973045,
+              1662973126,1662973193,1662973260,1662973351,1662973447,1662973529,
+              1662973613,1662973722,1662973789,1662973898,1662974030,1662974144]
 
-angle = '-80'
-mean = measurement_data['elevation'].mean()
-error = int(angle) - mean
-fig, ax = plt.subplots()
-fig.set_size_inches(8,2.5)
-ax.clear()
-ax.set_title(angle + '°')
-ax.set_xlim([-90,90])
-ax.set_ylim([0, 1])
-ax.text(-80,0.9,s = ('error = %.2f' %error),fontsize = 14)
-#plt.axvline(x = angle,color = 'lawngreen')
-plt.axvline(x = mean,color = 'red')
-sns.histplot(data = measurement_data['elevation'], stat="density", ax = ax)
-plt.savefig('result_0908/elevation_' + angle + '°.png' )
-plt.pause(3)
+for timestamp in time_list:
+    data_A = None
+    data_B = None
+    data_C = None
+    data_D = None
+    timestamp5 = timestamp+5
+    timestamp25 = timestamp+25
+    rssi = []
+
+    try:
+        data_A = get_measurement_data(anchor_config, 'anchor-a', timestamp5, timestamp25)
+        data_B = get_measurement_data(anchor_config, 'anchor-b', timestamp5, timestamp25)
+        data_C = get_measurement_data(anchor_config, 'anchor-c', timestamp5, timestamp25)
+        data_D = get_measurement_data(anchor_config, 'anchor-d', timestamp5, timestamp25)
+    except ValueError as ex:
+        print(f"{ex}")
+
+    for measurement_data in [data_A,data_B,data_C,data_D]:
+        mean = measurement_data['rssi'].mean()
+        rssi.append(mean)
+    print(rssi)
+    with open('result_0912_A.csv','a',newline = '\n') as f:
+        writer = csv.writer(f)
+        writer.writerow(rssi)
+
+
+#print(measurement_data)
 #measurement_data.to_csv('result_0908.csv', mode='a', index=True, header=True)
 #cut_range = np.arange(1657845678000, 1657845878000, 1000)
 #segments = pd.cut(measurement_data['unix_time'], cut_range)
