@@ -1,7 +1,7 @@
 /**
- * @version 1.3.0
+ * @version 1.4.0
  * @author  Jyun-wei, Su
- * @date    2022/08/29
+ * @date    2022/09/07
  * @brief   brief description
  * @details 
  * @bug     none
@@ -10,6 +10,12 @@
  * @see  Beacon scan exapmle: https://github.com/pcbreflux/espressif/blob/master/esp32/arduino/sketchbook/ESP32_BLE_beaconscan/ESP32_BLE_beaconscan.ino
  * @see  BLEAdvertisedDevice usage: https://github.com/espressif/arduino-esp32/blob/master/libraries/BLE/src/BLEAdvertisedDevice.h
  * @see  Eddystone protocol specification: https://github.com/google/eddystone/blob/master/protocol-specification.md
+ * @see  Frame Specification(cServiceData): https://github.com/google/eddystone/tree/master/eddystone-uid#frame-specification
+ * @note Tx power in payload is the received power at 0 meters measured in dBm. 
+ *       The value may range from -100 dBm to +20 dBm at a resolution of 1 dBm. 
+ *       The best way to determine the precise value to put into this field is to 
+ *       measure the actual output of your beacon from 1 meter away and then 
+ *       add 41 dBm to that. 41dBm is the signal loss that occurs over 1 meter.
  * @note library https://github.com/espressif/arduino-esp32/tree/master/libraries
  * @see  scan duration https://esp32.com/viewtopic.php?t=2291
  * @note Library had been update, so that need to add the second parameter: wantDuplicates
@@ -18,6 +24,16 @@
  * @note Make sure NTPClient_Generic.h only included in main .ino to avoid `Multiple Definitions` Linker Error
  *       @see https://github.com/khoih-prog/NTPClient_Generic
 */
+
+typedef enum
+{
+   SCAN_ALL_CHANNEL = 0,
+   ONLY_SCAN_CHANNEL_37,
+   ONLY_SCAN_CHANNEL_38,
+   ONLY_SCAN_CHANNEL_39,
+}
+scan_mode_config_t;
+extern scan_mode_config_t scan_channel_setting(scan_mode_config_t scan_mode);
 
 #if defined(ESP32)
   #include <WiFi.h>
@@ -60,7 +76,7 @@ String mDNS_name("ESP-");
 // doc variable
 char instance_id[16];
 char anchor_id[16];
-int wifi_rssi, rssi, channel;
+int wifi_rssi, rssi, channel, tx_power;
 unsigned long uudf_timestamp; // ms
 unsigned long long unix_timestamp; // ms
 int scanTime = 1; //In seconds
@@ -83,7 +99,7 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
     uint8_t cServiceData[128];
     strServiceData.copy((char *)cServiceData, strServiceData.length(), 0);
 
-    if (advertisedDevice.getServiceDataUUID().equals(BLEUUID(EddystoneBeconUUID))==true) {  // found Eddystone UUID
+    if (advertisedDevice.getServiceDataUUID().equals(BLEUUID(EddystoneBeconUUID))==true) {  // Found Eddystone UUID
       //-----
       //for (int i=0;i<strServiceData.length();i++) Serial.printf("[%02x]",cServiceData[i]); Serial.printf("\n");
       //unix_timestamp = timeClient.getUTCEpochMillis();
@@ -91,10 +107,10 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
       uudf_timestamp = millis();
       
       sprintf(instance_id, "%02X%02X%02X%02X%02X%02X", cServiceData[0x0C], cServiceData[0x0D], cServiceData[0x0E], cServiceData[0x0F], cServiceData[0x10], cServiceData[0x11]);
+      tx_power = (cServiceData[0x01] > 0x7F ? cServiceData[0x01] - 256 : cServiceData[0x01]) - 41; // In payload is at 0m, trans to 1m by minus 41
       rssi = advertisedDevice.getRSSI();
-      Serial.printf("uudf time: %lu\tinstance_id: %s RSSI: %d\t\n",
-                     millis(), instance_id, rssi);
-      
+      Serial.printf("uudf time: %lu\tinstance_id: %s RSSI: %d\t tx_power: %d\n",
+                     millis(), instance_id, rssi, tx_power);
       
       setJsonDoc(DOC_MEASUREMENT);
       Udp.beginPacket(serverIp.toString().c_str(), UDP_PORT);
@@ -206,6 +222,7 @@ void setup() {
   //=====Setup scaning device BEGIN=====
   Serial.println("Scanning...");
   BLEDevice::init("");
+  scan_channel_setting(ONLY_SCAN_CHANNEL_38);
   pBLEScan = BLEDevice::getScan(); // create new scan
   pBLEScan->setInterval(100); // default is 100
   pBLEScan->setWindow(100);   // default is 100
@@ -253,6 +270,7 @@ void setJsonDoc(JsonDocType docType){
     doc["anchor_id"]   = mac;
     doc["rssi"]        = wifi_rssi;
     doc["channel"]     = nullptr;
+    doc["tx_power"]    = nullptr;
     doc["message"]     = "Anchor Ready.";
   }
   else if(docType == DOC_MEASUREMENT)
@@ -263,6 +281,7 @@ void setJsonDoc(JsonDocType docType){
     doc["instance_id"] = instance_id; 
     doc["rssi"]        = rssi;
     doc["channel"]     = channel;
+    doc["tx_power"]    = tx_power;
     doc["message"]     = nullptr;
   }
   else if(docType == DOC_MESSAGE)
@@ -272,6 +291,7 @@ void setJsonDoc(JsonDocType docType){
     doc["anchor_id"]   = nullptr; 
     doc["rssi"]        = nullptr;
     doc["channel"]     = nullptr;
+    doc["tx_power"]    = nullptr;
     doc["message"]     = nullptr;
   }
 }
