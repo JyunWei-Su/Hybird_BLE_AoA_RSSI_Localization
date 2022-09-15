@@ -60,12 +60,12 @@ def get_measurement_data(anchor_config:dict, anchor_name:str, start_time:int, en
         cur = conn.cursor()
 
         # https://stackoverflow.com/questions/27884268/return-pandas-dataframe-from-postgresql-query-with-sqlalchemy
-        df = pd.read_sql_query(f"SELECT unix_time, rssi, azimuth, elevation \
+        df = pd.read_sql_query(f"SELECT unix_time, rssi, azimuth, elevation, channel \
                                  FROM measurement WHERE anchor_id='{id}' AND instance_id='6C1DEBA42193' \
                                  AND unix_time BETWEEN {start_time_ms} AND {end_time_ms} \
                                  ORDER BY unix_time asc",con = conn)
         # or SELECT * FROM measurement WHERE anchor_id='6C1DEBA097FA' AND to_timestamp(unix_time::double precision /1000) BETWEEN timestamp '2022-07-14 23:28:20.000' AND timestamp '2022-07-15 23:28:30.000';
-        #print(df)
+        print(df)
         #os.system('pause')
         cur.close()
         if conn is not None:
@@ -81,11 +81,11 @@ def get_measurement_data(anchor_config:dict, anchor_name:str, start_time:int, en
 anchor_config = get_system_config("system.ini")
 #pp.pprint(anchor_config)
 
-time_list =  [1662972623,1662972688,1662972820,1662972889,1662972974,1629973045,
-              1662973126,1662973193,1662973260,1662973351,1662973447,1662973529,
-              1662973613,1662973722,1662973789,1662973898,1662974030,1662974144]
+time_list =  [('1m',1662972623),('4m',1662972688),('7m',1662972820),('10m',1662972889),('14m',1662972974),
+              ('18m',1629973048),('22m',1662973126),('26m',1662973193),('30m',1662973260),
+              ('35m',1662973351),('40m',1662973447),('45m',1662973529),('50m',1662973613)]
 
-for timestamp in time_list:
+for distance,timestamp in time_list:
     data_A = None
     data_B = None
     data_C = None
@@ -97,18 +97,49 @@ for timestamp in time_list:
     try:
         data_A = get_measurement_data(anchor_config, 'anchor-a', timestamp5, timestamp25)
         data_B = get_measurement_data(anchor_config, 'anchor-b', timestamp5, timestamp25)
-        data_C = get_measurement_data(anchor_config, 'anchor-c', timestamp5, timestamp25)
-        data_D = get_measurement_data(anchor_config, 'anchor-d', timestamp5, timestamp25)
+        #data_C = get_measurement_data(anchor_config, 'anchor-c', timestamp5, timestamp25)
+        #data_D = get_measurement_data(anchor_config, 'anchor-d', timestamp5, timestamp25)
     except ValueError as ex:
         print(f"{ex}")
 
-    for measurement_data in [data_A,data_B,data_C,data_D]:
-        mean = measurement_data['rssi'].mean()
-        rssi.append(mean)
-    print(rssi)
-    with open('result_0912_A.csv','a',newline = '\n') as f:
-        writer = csv.writer(f)
-        writer.writerow(rssi)
+    for data in [data_A,data_B]:
+        data = data.groupby(['channel', 'rssi']).size().reset_index(name="count")
+        channel_37 = data[data['channel'] == 37].drop(columns=['channel'])
+        channel_38 = data[data['channel'] == 38].drop(columns=['channel'])
+        channel_39 = data[data['channel'] == 39].drop(columns=['channel'])
+        print(channel_37)
+        #data = channel_37.merge(channel_38, on='rssi', how='outer').merge(channel_39, on='rssi', how='outer')
+        #data = data.set_index('rssi')
+        #data = data.reindex(pd.RangeIndex(-40, -100, -1)).fillna(0)
+        #print(data)
+        fig,axs = plt.subplots(3,1)
+        fig.suptitle(distance)
+        plt.setp(axs, xlim = (-40,-100), ylim = (0,100))
+        channel_37.plot(x = 'rssi', y = 'count',
+                        xlabel = 'rssi(dbm)', ylabel='CH37',
+                        legend = True, figsize = (10, 5), color = 'blue',
+                        ax = axs[0])
+        channel_38.plot(x = 'rssi', y = 'count',
+                        xlabel = 'rssi(dbm)', ylabel = 'CH38',
+                        legend = True, figsize = (10, 5), color = 'lawngreen',
+                        ax = axs[1])
+        channel_39.plot(x = 'rssi', y = 'count',
+                        xlabel = 'rssi(dbm)', ylabel = 'CH39',
+                        legend = True, figsize = (10, 5), color = 'orange',
+                        ax = axs[2])
+        
+        #plt.savefig('channel_analysis_0912/elevation_' + distance + '°.png' )
+        plt.show(block=False)
+        plt.pause(1)
+        plt.close()
+
+#    for data in [data_A,data_B,data_C,data_D]:
+#        mean = data['rssi'].mean()
+#        rssi.append(mean)
+    #print(rssi)
+    #with open('result_0912_A.csv','a',newline = '\n') as f:
+        #writer = csv.writer(f)
+        #writer.writerow(rssi)
 
 
 #print(measurement_data)
