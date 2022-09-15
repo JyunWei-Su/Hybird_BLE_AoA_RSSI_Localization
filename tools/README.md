@@ -31,6 +31,7 @@
   "tx_power": -33
 }
 ```
+
 * 用ESP32 Arduino 範例掃描可以得到
 `02 01 04 03 03 aa fe 17 16 aa fe 00 08 4e 49 4e 41 2d 42 34 54 41 47 6c 1d eb a4 16 80 00 00`
 | LEN | TYPE | VALUE |
