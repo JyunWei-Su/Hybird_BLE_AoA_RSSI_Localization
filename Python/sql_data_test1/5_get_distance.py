@@ -85,6 +85,7 @@ time_list =  [('1m',1662972623),('4m',1662972688),('7m',1662972820),('10m',16629
               ('18m',1629973048),('22m',1662973126),('26m',1662973193),('30m',1662973260),
               ('35m',1662973351),('40m',1662973447),('45m',1662973529),('50m',1662973613)]
 
+fig, axs = plt.subplots(3,1)
 for distance,timestamp in time_list:
     data_A = None
     data_B = None
@@ -101,8 +102,12 @@ for distance,timestamp in time_list:
         #data_D = get_measurement_data(anchor_config, 'anchor-d', timestamp5, timestamp25)
     except ValueError as ex:
         print(f"{ex}")
-
-    for data in [data_A,data_B]:
+    
+    
+    for data in [data_A]:
+        axs[0].clear()
+        axs[1].clear()
+        axs[2].clear()
         data = data.groupby(['channel', 'rssi']).size().reset_index(name="count")
         channel_37 = data[data['channel'] == 37].drop(columns=['channel'])
         channel_38 = data[data['channel'] == 38].drop(columns=['channel'])
@@ -112,7 +117,7 @@ for distance,timestamp in time_list:
         #data = data.set_index('rssi')
         #data = data.reindex(pd.RangeIndex(-40, -100, -1)).fillna(0)
         #print(data)
-        fig,axs = plt.subplots(3,1)
+        
         fig.suptitle(distance)
         plt.setp(axs, xlim = (-40,-100), ylim = (0,100))
         channel_37.plot(x = 'rssi', y = 'count',
@@ -129,9 +134,10 @@ for distance,timestamp in time_list:
                         ax = axs[2])
         
         #plt.savefig('channel_analysis_0912/elevation_' + distance + '°.png' )
-        plt.show(block=False)
+        #plt.show(block=False)
         plt.pause(1)
-        plt.close()
+        
+        #plt.close()
 
 #    for data in [data_A,data_B,data_C,data_D]:
 #        mean = data['rssi'].mean()
