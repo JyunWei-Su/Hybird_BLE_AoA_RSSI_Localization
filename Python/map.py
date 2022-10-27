@@ -57,6 +57,9 @@ plot_anchor(   0, 12.5, 'Anchor D', 'esp32')
 plt.scatter( 4.75, 7.75, marker='o', color='red', s=75) #tag p
 plt.scatter(10.75, 7.75, marker='o', color='red', s=75) #tag q
 plt.scatter(16.75, 7.75, marker='o', color='red', s=75) #tag r
+plt.scatter( 1.75, 4.75, marker='o', color='red', s=75) #tag p
+plt.scatter( 7.75, 4.75, marker='o', color='red', s=75) #tag q
+plt.scatter(13.75, 4.75, marker='o', color='red', s=75) #tag r
 
 plt.scatter(16.75, 7.75, marker='x', color='yellow', s=75) #tag r
 
