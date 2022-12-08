@@ -11,23 +11,23 @@ import matplotlib.patches as patches
 
 fig, ax = plt.subplots()
 ax.set_ylim(-1, 13.5)
-ax.set_xlim(-1, 19.5)
+ax.set_xlim(-1, 13.5)
 # Change major ticks to show every 20.
-ax.xaxis.set_major_locator(MultipleLocator(6))
-ax.yaxis.set_major_locator(MultipleLocator(6)) # 主要格線距離
+ax.xaxis.set_major_locator(MultipleLocator(12))
+ax.yaxis.set_major_locator(MultipleLocator(12)) # 主要格線距離
 
 # Change minor ticks to show every 5. (20/4 = 5)
-ax.xaxis.set_minor_locator(AutoMinorLocator(12))
-ax.yaxis.set_minor_locator(AutoMinorLocator(12)) # 切n段
+ax.xaxis.set_minor_locator(AutoMinorLocator(6))
+ax.yaxis.set_minor_locator(AutoMinorLocator(6)) # 切n段
 
 # Turn grid on for both major and minor ticks and style minor slightly
 # differently.
-ax.grid(which='major', color='#CCCCCC', linestyle='--')
-ax.grid(which='minor', color='#CCCCCC', linestyle=':')
+ax.grid(which='major', color='#CCCCCC', linestyle='dashed')
+ax.grid(which='minor', color='#CCCCCC', linestyle='dotted')
 
 tiles = []
-for x in range(0, 37):
-    for y in range(0, 25):
+for x in range(0, 25):
+    for y in range(0, 37):
         if x % 6 == 0 and y % 6 == 0:
             tiles.append((x/2, y/2))
         elif (x-3) % 6 == 0 and (y-3) % 6 == 0:
@@ -41,7 +41,7 @@ for tile in tiles:
 
 def plot_anchor(x, y, nickName, type):
     if(type == 'xplr-aoa'):
-        plt.scatter(x, y, marker='^', color='limegreen', s=75) #xplr-aoa
+        ax.scatter(x, y, marker='^', color='limegreen', s=75) #xplr-aoa
         ax.text(x, y-0.5, 'xplr-aoa', fontsize=8, horizontalalignment='center', verticalalignment='center', color='limegreen')
         ax.text(x, y+0.5, nickName, fontsize=8, horizontalalignment='center', verticalalignment='center', color='limegreen')
     elif(type == 'esp32'):
@@ -49,24 +49,22 @@ def plot_anchor(x, y, nickName, type):
         ax.text(x, y-0.5, 'esp32', fontsize=8, horizontalalignment='center', verticalalignment='center', color='deepskyblue')
         ax.text(x, y+0.5, nickName, fontsize=8, horizontalalignment='center', verticalalignment='center', color='deepskyblue')
 
+def plot_tag(x, y, tagName):
+    plt.scatter(x, y, marker='o', color='red', s=75)
+    ax.text( x, y+0.5, tagName, fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
+
 plot_anchor(   0,    0, 'Anchor B', 'xplr-aoa')
-plot_anchor(18.5, 12.5, 'Anchor A', 'xplr-aoa')
-plot_anchor(18.5,    0, 'Anchor C', 'esp32')
+plot_anchor(12.5,    0, 'Anchor A', 'xplr-aoa')
 plot_anchor(   0, 12.5, 'Anchor D', 'esp32')
+plot_anchor(12.5, 12.5, 'Anchor C', 'esp32')
 
-plt.scatter( 4.75, 7.75, marker='o', color='red', s=75) #tag p
-plt.scatter(10.75, 7.75, marker='o', color='red', s=75) #tag q
-plt.scatter(16.75, 7.75, marker='o', color='red', s=75) #tag r
-plt.scatter( 1.75, 4.75, marker='o', color='red', s=75) #tag p
-plt.scatter( 7.75, 4.75, marker='o', color='red', s=75) #tag q
-plt.scatter(13.75, 4.75, marker='o', color='red', s=75) #tag r
+plot_tag(9.25, 3.25, 'T1')
+plot_tag(6.25, 3.25, 'T2')
+plot_tag(3.25, 3.25, 'T3')
+plot_tag(3.25, 9.25, 'T4')
+plot_tag(9.25, 9.25, 'T5')
+plot_tag(6.25, 6.25, 'T6')
 
-ax.text( 4.75, 7.75+0.5, 'T3', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
-ax.text(10.75, 7.75+0.5, 'T2', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
-ax.text(16.75, 7.75+0.5, 'T1', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
-ax.text( 1.75, 4.75+0.5, 'T4', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
-ax.text( 7.75, 4.75+0.5, 'T5', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
-ax.text(13.75, 4.75+0.5, 'T6', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
 #plt.scatter(16.75, 7.75, marker='x', color='yellow', s=75) #tag r
 
 

@@ -60,14 +60,31 @@ plt.scatter(16.75, 7.75, marker='o', color='red', s=75) #tag r
 plt.scatter( 1.75, 4.75, marker='o', color='red', s=75) #tag p
 plt.scatter( 7.75, 4.75, marker='o', color='red', s=75) #tag q
 plt.scatter(13.75, 4.75, marker='o', color='red', s=75) #tag r
-
-ax.text( 4.75, 7.75+0.5, 'T3', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
-ax.text(10.75, 7.75+0.5, 'T2', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
 ax.text(16.75, 7.75+0.5, 'T1', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
+ax.text(10.75, 7.75+0.5, 'T2', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
+ax.text( 4.75, 7.75+0.5, 'T3', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
 ax.text( 1.75, 4.75+0.5, 'T4', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
 ax.text( 7.75, 4.75+0.5, 'T5', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
 ax.text(13.75, 4.75+0.5, 'T6', fontsize=8, horizontalalignment='center', verticalalignment='center', color='red')
-#plt.scatter(16.75, 7.75, marker='x', color='yellow', s=75) #tag r
+
+result = [(16.25, 8.14 ), (16.28, 8.15 ), (15.40, 7.35 ), (15.22, 7.96 ), (15.94, 8.06 ), \
+(16.06, 8.04 ), (16.07, 7.85 ), (16.82, 7.70 ), (16.51, 7.34 ), (16.52, 7.82 ), \
+(16.09, 8.07 ), (15.90, 7.78 ), (16.58, 7.95 ), (17.12, 7.78 ), (16.43, 7.73 ), \
+(16.08, 8.06 ), (16.23, 7.84 ), (15.93, 8.10 ), (15.97, 7.72 ), (15.90, 8.18 ), \
+(16.44, 7.86 ), (16.11, 6.99 ), (16.04, 9.24 ), (16.15, 8.30 ), (16.15, 8.30 ), \
+(15.92, 7.80 ), (16.01, 7.72 ), (16.06, 7.54 ), (15.66, 7.66 ), (15.28, 7.66 ), \
+(16.19, 7.50 ), (15.83, 7.89 ), (15.74, 6.96 ), (15.88, 7.69 ), (16.00, 7.71 ), \
+(14.98, 8.26 ), (15.55, 8.09 ), (16.13, 8.08 ), (15.99, 7.84 ), (15.73, 7.89 ), \
+(15.73, 7.89 ), (15.79, 7.75 ), (14.69, 6.96 ), (15.98, 7.48 ), (15.95, 7.50 ), \
+(16.55, 7.65 ), (16.05, 8.06 ), (15.82, 7.94 ), (15.82, 7.94 ), (15.42, 8.94 ), \
+(15.42, 8.94 ), (16.16, 7.96 ), (14.18, 6.99 ), (16.16, 8.65 ), (15.64, 7.43 ), \
+(15.43, 8.16 ), (16.19, 7.77 ), (16.13, 7.16 ), (15.89, 7.29 ), (16.73, 5.99 )]
+
+for point_x, point_y in result:
+    plt.scatter(point_x, point_y, marker='.', color='blue', s=10)
+
+
+plt.scatter(16.75, 7.75, marker='x', color='yellow', s=75) #tag r
 
 
 plt.show()

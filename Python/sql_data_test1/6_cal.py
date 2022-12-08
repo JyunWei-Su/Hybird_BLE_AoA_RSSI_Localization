@@ -218,6 +218,7 @@ cal_anchor_list = extract_cal_anchor_list(measurement_data)
 cal_anchor_list = sorted(cal_anchor_list, key=lambda x: x['R']) # sort using R https://note.nkmk.me/en/python-dict-list-sort/
 
 pp.pprint(cal_anchor_list)
+print('-'*10 + type(cal_anchor_list))
 
 H = generate_H(cal_anchor_list)
 b = generate_b(cal_anchor_list)
