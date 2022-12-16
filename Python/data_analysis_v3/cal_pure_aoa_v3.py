@@ -19,8 +19,6 @@ import os
 import csv
 import math
 
-
-
 # Listen for incoming datagrams
     
 import configparser
