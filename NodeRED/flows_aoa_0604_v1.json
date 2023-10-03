@@ -1,0 +1,2087 @@
+[
+    {
+        "id": "7e01a881431160b7",
+        "type": "tab",
+        "label": "距離RSSI",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "5c8117b8314b1a35",
+        "type": "tab",
+        "label": "角度",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ceea969efc282e5e",
+        "type": "ui_tab",
+        "name": "XPLR-AoA (RSSI)",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "21a4d5519c1c936d",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "9d94cfa9119d0574",
+        "type": "ui_group",
+        "name": "AoA (Array)",
+        "tab": "ceea969efc282e5e",
+        "order": 1,
+        "disp": true,
+        "width": "9",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "72679bb51fb5ff6e",
+        "type": "ui_group",
+        "name": "AoA (Single)",
+        "tab": "ceea969efc282e5e",
+        "order": 2,
+        "disp": true,
+        "width": "9",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "55d59d934c777f4a",
+        "type": "ui_tab",
+        "name": "XPLR-AoA (Angle)",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "8833e8c5c5fc3587",
+        "type": "ui_group",
+        "name": "Angle",
+        "tab": "55d59d934c777f4a",
+        "order": 1,
+        "disp": true,
+        "width": "24",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "29f18229f5dab391",
+        "type": "udp in",
+        "z": "7e01a881431160b7",
+        "d": true,
+        "name": "",
+        "iface": "",
+        "port": "4101",
+        "ipv": "udp4",
+        "multicast": "false",
+        "group": "",
+        "datatype": "utf8",
+        "x": 100,
+        "y": 140,
+        "wires": [
+            [
+                "9682b5cf65c91b79"
+            ]
+        ]
+    },
+    {
+        "id": "8cac3f15766fbd89",
+        "type": "ui_text",
+        "z": "7e01a881431160b7",
+        "group": "9d94cfa9119d0574",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "data",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 450,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "555a314cc7b074f4",
+        "type": "ui_chart",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "group": "9d94cfa9119d0574",
+        "order": 6,
+        "width": "0",
+        "height": "0",
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-30",
+        "ymax": "-100",
+        "removeOlder": 1,
+        "removeOlderPoints": "500",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 630,
+        "y": 140,
+        "wires": [
+            [
+                "b74a5b6ca229a349"
+            ]
+        ]
+    },
+    {
+        "id": "f1450bfcf2af0bbd",
+        "type": "debug",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "2e0e4d6e479028bf",
+        "type": "function",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "func": "data = msg.payload.split(',');\nmsg.payload = data;\nvar rssi = {};\nvar animuth = {};\nvar elevation = {};\nrssi.payload = parseInt(data[1]);\nanimuth.payload = parseInt(data[2]);\nelevation.payload = parseInt(data[3]);\nreturn [msg, rssi, animuth, elevation];",
+        "outputs": 4,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 160,
+        "wires": [
+            [
+                "f1450bfcf2af0bbd"
+            ],
+            [
+                "555a314cc7b074f4"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "9682b5cf65c91b79",
+        "type": "msg-speed",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "frequency": "sec",
+        "interval": 1,
+        "estimation": false,
+        "ignore": false,
+        "pauseAtStartup": false,
+        "topicDependent": false,
+        "x": 250,
+        "y": 140,
+        "wires": [
+            [
+                "5c9981ed3b828926"
+            ],
+            [
+                "8cac3f15766fbd89",
+                "2e0e4d6e479028bf"
+            ]
+        ]
+    },
+    {
+        "id": "5c9981ed3b828926",
+        "type": "ui_text",
+        "z": "7e01a881431160b7",
+        "group": "9d94cfa9119d0574",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "msg speed",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 470,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "9088a91229300ea4",
+        "type": "ui_slider",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "label": "distance_setting",
+        "tooltip": "",
+        "group": "9d94cfa9119d0574",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "all",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "150",
+        "step": 1,
+        "className": "",
+        "x": 120,
+        "y": 480,
+        "wires": [
+            [
+                "bdf930185259c773",
+                "357c7eceedf36535"
+            ]
+        ]
+    },
+    {
+        "id": "bdf930185259c773",
+        "type": "ui_text",
+        "z": "7e01a881431160b7",
+        "group": "72679bb51fb5ff6e",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "distance",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 320,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "2ac23adb4c7aafa9",
+        "type": "ui_button",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "group": "9d94cfa9119d0574",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "存檔",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "topic": "complete",
+        "topicType": "msg",
+        "x": 630,
+        "y": 100,
+        "wires": [
+            [
+                "4bbab41f6495d353"
+            ]
+        ]
+    },
+    {
+        "id": "b74a5b6ca229a349",
+        "type": "change",
+        "z": "7e01a881431160b7",
+        "name": "set topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "data",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 760,
+        "y": 140,
+        "wires": [
+            [
+                "a857115c21277f9c"
+            ]
+        ]
+    },
+    {
+        "id": "4bbab41f6495d353",
+        "type": "change",
+        "z": "7e01a881431160b7",
+        "name": "set topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "complete",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 760,
+        "y": 100,
+        "wires": [
+            [
+                "a857115c21277f9c"
+            ]
+        ]
+    },
+    {
+        "id": "a857115c21277f9c",
+        "type": "join",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 910,
+        "y": 140,
+        "wires": [
+            [
+                "ba9f7c6fcacab037"
+            ]
+        ]
+    },
+    {
+        "id": "7e642b7136918801",
+        "type": "debug",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "357c7eceedf36535",
+        "type": "change",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "distance",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 360,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ba9f7c6fcacab037",
+        "type": "function",
+        "z": "7e01a881431160b7",
+        "name": "圖表擷取資料與產生檔名",
+        "func": "var timestamp = Math.floor(+new Date() / 1000);\nvar filename = \"\\/home\\/xplr-aoa\\/aoa-data\\/array\\/\" + global.get('distance') + \"_\" + timestamp.toString();\nvar data = msg.payload['data'][0]['data'];\n\nmsg.payload = data;\nmsg.filename = filename;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 180,
+        "wires": [
+            [
+                "7e642b7136918801",
+                "4e49a2fadf703857",
+                "f055354b6868bd06"
+            ]
+        ]
+    },
+    {
+        "id": "f055354b6868bd06",
+        "type": "ui_text",
+        "z": "7e01a881431160b7",
+        "group": "9d94cfa9119d0574",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "save_filename",
+        "format": "{{msg.filename}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 940,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "4e49a2fadf703857",
+        "type": "file",
+        "z": "7e01a881431160b7",
+        "name": "存檔",
+        "filename": "",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 910,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8497972725d4c10f",
+        "type": "udp in",
+        "z": "7e01a881431160b7",
+        "d": true,
+        "name": "",
+        "iface": "",
+        "port": "4102",
+        "ipv": "udp4",
+        "multicast": "false",
+        "group": "",
+        "datatype": "utf8",
+        "x": 100,
+        "y": 360,
+        "wires": [
+            [
+                "cf232830ee5d7f07"
+            ]
+        ]
+    },
+    {
+        "id": "5893af1f6f51d2a8",
+        "type": "ui_text",
+        "z": "7e01a881431160b7",
+        "group": "72679bb51fb5ff6e",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "data",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 450,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "417d3b8a3cb839ea",
+        "type": "ui_chart",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "group": "72679bb51fb5ff6e",
+        "order": 6,
+        "width": "0",
+        "height": "0",
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-30",
+        "ymax": "-100",
+        "removeOlder": 1,
+        "removeOlderPoints": "500",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 450,
+        "y": 400,
+        "wires": [
+            [
+                "6008d89bacf91551"
+            ]
+        ]
+    },
+    {
+        "id": "cf232830ee5d7f07",
+        "type": "msg-speed",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "frequency": "sec",
+        "interval": 1,
+        "estimation": false,
+        "ignore": false,
+        "pauseAtStartup": false,
+        "topicDependent": false,
+        "x": 250,
+        "y": 360,
+        "wires": [
+            [
+                "c4b97b75e1b9ba00"
+            ],
+            [
+                "5893af1f6f51d2a8",
+                "417d3b8a3cb839ea"
+            ]
+        ]
+    },
+    {
+        "id": "c4b97b75e1b9ba00",
+        "type": "ui_text",
+        "z": "7e01a881431160b7",
+        "group": "9d94cfa9119d0574",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "msg speed",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 470,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "5d0ad5131ec53f4f",
+        "type": "ui_button",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "group": "72679bb51fb5ff6e",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "存檔",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "topic": "complete",
+        "topicType": "msg",
+        "x": 450,
+        "y": 360,
+        "wires": [
+            [
+                "fd2cd287520289b2"
+            ]
+        ]
+    },
+    {
+        "id": "6008d89bacf91551",
+        "type": "change",
+        "z": "7e01a881431160b7",
+        "name": "set topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "data",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 580,
+        "y": 400,
+        "wires": [
+            [
+                "9824b096f2c9d2c8"
+            ]
+        ]
+    },
+    {
+        "id": "fd2cd287520289b2",
+        "type": "change",
+        "z": "7e01a881431160b7",
+        "name": "set topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "complete",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 580,
+        "y": 360,
+        "wires": [
+            [
+                "9824b096f2c9d2c8"
+            ]
+        ]
+    },
+    {
+        "id": "9824b096f2c9d2c8",
+        "type": "join",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 730,
+        "y": 400,
+        "wires": [
+            [
+                "d75c9cd3b4526176"
+            ]
+        ]
+    },
+    {
+        "id": "87032134400c5a5b",
+        "type": "debug",
+        "z": "7e01a881431160b7",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "d75c9cd3b4526176",
+        "type": "function",
+        "z": "7e01a881431160b7",
+        "name": "圖表擷取資料與產生檔名",
+        "func": "var timestamp = Math.floor(+new Date() / 1000);\nvar filename = \"\\/home\\/xplr-aoa\\/aoa-data\\/single\\/\" + global.get('distance') + \"_\" + timestamp.toString();\nvar data = msg.payload['data'][0]['data'];\n\nmsg.payload = data;\nmsg.filename = filename;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 440,
+        "wires": [
+            [
+                "87032134400c5a5b",
+                "c29c7681cb8abe0f",
+                "a5851418ee57e4c0"
+            ]
+        ]
+    },
+    {
+        "id": "a5851418ee57e4c0",
+        "type": "ui_text",
+        "z": "7e01a881431160b7",
+        "group": "72679bb51fb5ff6e",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "save_filename",
+        "format": "{{msg.filename}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 940,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "c29c7681cb8abe0f",
+        "type": "file",
+        "z": "7e01a881431160b7",
+        "name": "存檔",
+        "filename": "",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 910,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c0847a3bfada89e4",
+        "type": "comment",
+        "z": "7e01a881431160b7",
+        "name": "Single",
+        "info": "",
+        "x": 90,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "512a6803a0098a37",
+        "type": "comment",
+        "z": "7e01a881431160b7",
+        "name": "Array",
+        "info": "",
+        "x": 90,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "1586f448eba966d6",
+        "type": "udp in",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "iface": "",
+        "port": "4101",
+        "ipv": "udp4",
+        "multicast": "false",
+        "group": "",
+        "datatype": "utf8",
+        "x": 100,
+        "y": 220,
+        "wires": [
+            [
+                "e6d48d27e6745d46"
+            ]
+        ]
+    },
+    {
+        "id": "ce7cbf68ebaf5b90",
+        "type": "ui_text",
+        "z": "5c8117b8314b1a35",
+        "group": "8833e8c5c5fc3587",
+        "order": 13,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "data",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 450,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "3bfa1212841043dc",
+        "type": "ui_chart",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 14,
+        "width": "8",
+        "height": "6",
+        "label": "RSSI",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-30",
+        "ymax": "-100",
+        "removeOlder": 1,
+        "removeOlderPoints": "500",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 410,
+        "y": 340,
+        "wires": [
+            [
+                "5d0da838c842fd7e",
+                "45d1237bba1344ab"
+            ]
+        ]
+    },
+    {
+        "id": "e1b8c4dcaca7f12c",
+        "type": "debug",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 430,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "832fa806cf5511d8",
+        "type": "function",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "func": "if(global.get('enable') == true)\n{\n    data = msg.payload.split(',');\n    msg.payload = data;\n    var rssi = {};\n    var animuth = {};\n    var elevation = {};\n    rssi.payload = parseInt(data[1]);\n    animuth.payload = parseInt(data[2]);\n    elevation.payload = parseInt(data[3]);\n    return [msg, rssi, animuth, elevation];\n}\nelse\n{\n    return null;\n}\n",
+        "outputs": 4,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 210,
+        "y": 320,
+        "wires": [
+            [
+                "e1b8c4dcaca7f12c"
+            ],
+            [
+                "3bfa1212841043dc"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "e6d48d27e6745d46",
+        "type": "msg-speed",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "frequency": "sec",
+        "interval": 1,
+        "estimation": false,
+        "ignore": false,
+        "pauseAtStartup": false,
+        "topicDependent": false,
+        "x": 250,
+        "y": 220,
+        "wires": [
+            [
+                "e95af8065aa23762"
+            ],
+            [
+                "832fa806cf5511d8",
+                "ce7cbf68ebaf5b90"
+            ]
+        ]
+    },
+    {
+        "id": "e95af8065aa23762",
+        "type": "ui_text",
+        "z": "5c8117b8314b1a35",
+        "group": "8833e8c5c5fc3587",
+        "order": 3,
+        "width": "6",
+        "height": "1",
+        "name": "",
+        "label": "msg speed",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 470,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "65369bc76d5044f9",
+        "type": "ui_slider",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "label": "angle_setting",
+        "tooltip": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 2,
+        "width": "12",
+        "height": "1",
+        "passthru": true,
+        "outs": "all",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": "-90",
+        "max": "90",
+        "step": "15",
+        "className": "",
+        "x": 130,
+        "y": 40,
+        "wires": [
+            [
+                "bac720746acb405a",
+                "6451cc12ad1ccd01"
+            ]
+        ]
+    },
+    {
+        "id": "bac720746acb405a",
+        "type": "ui_text",
+        "z": "5c8117b8314b1a35",
+        "group": "8833e8c5c5fc3587",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "name": "",
+        "label": "angle",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 310,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "41fa6a5dd933eb2c",
+        "type": "ui_button",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 7,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "label": "存檔",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "topic": "complete",
+        "topicType": "msg",
+        "x": 410,
+        "y": 300,
+        "wires": [
+            [
+                "517170a999a030cb"
+            ]
+        ]
+    },
+    {
+        "id": "5d0da838c842fd7e",
+        "type": "change",
+        "z": "5c8117b8314b1a35",
+        "name": "set topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "data",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 340,
+        "wires": [
+            [
+                "27c031f8b503be2b"
+            ]
+        ]
+    },
+    {
+        "id": "517170a999a030cb",
+        "type": "change",
+        "z": "5c8117b8314b1a35",
+        "name": "set topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "complete",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 300,
+        "wires": [
+            [
+                "27c031f8b503be2b",
+                "47a2a43b24c882f2",
+                "340a6a6ccaa69c26"
+            ]
+        ]
+    },
+    {
+        "id": "27c031f8b503be2b",
+        "type": "join",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 790,
+        "y": 340,
+        "wires": [
+            [
+                "79022623ce5744fa"
+            ]
+        ]
+    },
+    {
+        "id": "22df02d8b67543b7",
+        "type": "debug",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1210,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "6451cc12ad1ccd01",
+        "type": "change",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "angle",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 350,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "79022623ce5744fa",
+        "type": "function",
+        "z": "5c8117b8314b1a35",
+        "name": "圖表擷取資料與產生檔名",
+        "func": "var timestamp = Math.floor(+new Date() / 1000);\nvar filename = \"\\/home\\/xplr-aoa\\/aoa-data\\/angle\\/rssi_\" \n             + global.get('tag') + \"_\" \n             + global.get('front_back') + \"_\" \n             + global.get('measure') + \"_\" \n             + global.get('angle') + \"_\" \n             + timestamp.toString();\nvar data = msg.payload['data'][0]['data'];\n\nmsg.payload = data;\nmsg.filename = filename;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 340,
+        "wires": [
+            [
+                "22df02d8b67543b7",
+                "ddd3376cfa20c555"
+            ]
+        ]
+    },
+    {
+        "id": "f919792d1e1d3824",
+        "type": "ui_text",
+        "z": "5c8117b8314b1a35",
+        "group": "8833e8c5c5fc3587",
+        "order": 12,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "save_filename",
+        "format": "{{msg.filename}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1220,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "ddd3376cfa20c555",
+        "type": "file",
+        "z": "5c8117b8314b1a35",
+        "name": "存檔",
+        "filename": "",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1190,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a40c1e16872b06df",
+        "type": "comment",
+        "z": "5c8117b8314b1a35",
+        "name": "Array",
+        "info": "",
+        "x": 90,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "ced2b11a6a9ff837",
+        "type": "ui_chart",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 15,
+        "width": "8",
+        "height": "6",
+        "label": "Animuth (方位角)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-90",
+        "ymax": "90",
+        "removeOlder": 1,
+        "removeOlderPoints": "500",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 450,
+        "y": 380,
+        "wires": [
+            [
+                "daa42eb7991bdea9"
+            ]
+        ]
+    },
+    {
+        "id": "9745443e60942199",
+        "type": "ui_chart",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 16,
+        "width": "8",
+        "height": "6",
+        "label": "Elevation (俯仰角)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-90",
+        "ymax": "90",
+        "removeOlder": 1,
+        "removeOlderPoints": "500",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 450,
+        "y": 420,
+        "wires": [
+            [
+                "66f9a4ec4a522529"
+            ]
+        ]
+    },
+    {
+        "id": "daa42eb7991bdea9",
+        "type": "change",
+        "z": "5c8117b8314b1a35",
+        "name": "set topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "data",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 380,
+        "wires": [
+            [
+                "47a2a43b24c882f2"
+            ]
+        ]
+    },
+    {
+        "id": "66f9a4ec4a522529",
+        "type": "change",
+        "z": "5c8117b8314b1a35",
+        "name": "set topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "data",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 420,
+        "wires": [
+            [
+                "340a6a6ccaa69c26"
+            ]
+        ]
+    },
+    {
+        "id": "47a2a43b24c882f2",
+        "type": "join",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 790,
+        "y": 380,
+        "wires": [
+            [
+                "0a117fa6addba28d"
+            ]
+        ]
+    },
+    {
+        "id": "340a6a6ccaa69c26",
+        "type": "join",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 790,
+        "y": 420,
+        "wires": [
+            [
+                "6f805734be5b758e"
+            ]
+        ]
+    },
+    {
+        "id": "0a117fa6addba28d",
+        "type": "function",
+        "z": "5c8117b8314b1a35",
+        "name": "圖表擷取資料與產生檔名",
+        "func": "var timestamp = Math.floor(+new Date() / 1000);\nvar filename = \"\\/home\\/xplr-aoa\\/aoa-data\\/angle\\/animuth_\" \n             + global.get('tag') + \"_\" \n             + global.get('front_back') + \"_\" \n             + global.get('measure') + \"_\" \n             + global.get('angle') + \"_\" \n             + timestamp.toString();\nvar data = msg.payload['data'][0]['data'];\n\nmsg.payload = data;\nmsg.filename = filename;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 380,
+        "wires": [
+            [
+                "ddd3376cfa20c555",
+                "f919792d1e1d3824"
+            ]
+        ]
+    },
+    {
+        "id": "6f805734be5b758e",
+        "type": "function",
+        "z": "5c8117b8314b1a35",
+        "name": "圖表擷取資料與產生檔名",
+        "func": "var timestamp = Math.floor(+new Date() / 1000);\nvar filename = \"\\/home\\/xplr-aoa\\/aoa-data\\/angle\\/elevation_\" \n             + global.get('tag') + \"_\" \n             + global.get('front_back') + \"_\" \n             + global.get('measure') + \"_\" \n             + global.get('angle') + \"_\" \n             + timestamp.toString();\nvar data = msg.payload['data'][0]['data'];\n\nmsg.payload = data;\nmsg.filename = filename;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 420,
+        "wires": [
+            [
+                "ddd3376cfa20c555"
+            ]
+        ]
+    },
+    {
+        "id": "532a858f672a94fd",
+        "type": "ui_multistate_switch",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 4,
+        "width": "6",
+        "height": 1,
+        "label": "Tag",
+        "stateField": "payload",
+        "enableField": "enable",
+        "passthroughField": "passthrough",
+        "inputMsgField": "inputmsg",
+        "rounded": true,
+        "useThemeColors": true,
+        "hideSelectedLabel": false,
+        "multilineLabel": false,
+        "passThrough": "never",
+        "inputMsg": "all",
+        "userInput": "enabled_show",
+        "options": [
+            {
+                "label": "upright",
+                "value": "upright",
+                "valueType": "str",
+                "color": "#009933"
+            },
+            {
+                "label": "layflat",
+                "value": "layflat",
+                "valueType": "str",
+                "color": "#999999"
+            }
+        ],
+        "topic": "",
+        "x": 670,
+        "y": 80,
+        "wires": [
+            [
+                "f20bd1244102132b"
+            ]
+        ]
+    },
+    {
+        "id": "f20bd1244102132b",
+        "type": "change",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "tag",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 840,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c9de06c7554f35e8",
+        "type": "ui_multistate_switch",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 5,
+        "width": "6",
+        "height": 1,
+        "label": "正反面",
+        "stateField": "payload",
+        "enableField": "enable",
+        "passthroughField": "passthrough",
+        "inputMsgField": "inputmsg",
+        "rounded": true,
+        "useThemeColors": true,
+        "hideSelectedLabel": false,
+        "multilineLabel": false,
+        "passThrough": "never",
+        "inputMsg": "all",
+        "userInput": "enabled_show",
+        "options": [
+            {
+                "label": "front",
+                "value": "front",
+                "valueType": "str",
+                "color": "#009933"
+            },
+            {
+                "label": "right",
+                "value": "right",
+                "valueType": "str",
+                "color": "#999999"
+            }
+        ],
+        "topic": "",
+        "x": 670,
+        "y": 120,
+        "wires": [
+            [
+                "bf3fdf0c57c96442"
+            ]
+        ]
+    },
+    {
+        "id": "bf3fdf0c57c96442",
+        "type": "change",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "front_back",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 860,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "782a1b3383349345",
+        "type": "ui_multistate_switch",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 6,
+        "width": "6",
+        "height": 1,
+        "label": "主要測量",
+        "stateField": "payload",
+        "enableField": "enable",
+        "passthroughField": "passthrough",
+        "inputMsgField": "inputmsg",
+        "rounded": true,
+        "useThemeColors": true,
+        "hideSelectedLabel": false,
+        "multilineLabel": false,
+        "passThrough": "never",
+        "inputMsg": "all",
+        "userInput": "enabled_show",
+        "options": [
+            {
+                "label": "方位角",
+                "value": "animuth",
+                "valueType": "str",
+                "color": "#009933"
+            },
+            {
+                "label": "俯仰角",
+                "value": "elevation",
+                "valueType": "str",
+                "color": "#999999"
+            }
+        ],
+        "topic": "",
+        "x": 680,
+        "y": 160,
+        "wires": [
+            [
+                "0d02465dbee89f62"
+            ]
+        ]
+    },
+    {
+        "id": "0d02465dbee89f62",
+        "type": "change",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "measure",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 860,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "40f5db1e70ce9dce",
+        "type": "ui_button",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 11,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "label": "清除圖表",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "[]",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 160,
+        "y": 400,
+        "wires": [
+            [
+                "3bfa1212841043dc",
+                "9745443e60942199",
+                "ced2b11a6a9ff837"
+            ]
+        ]
+    },
+    {
+        "id": "07fffc2d0904e3da",
+        "type": "ui_switch",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "label": "紀錄",
+        "tooltip": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 8,
+        "width": "6",
+        "height": "1",
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 650,
+        "y": 500,
+        "wires": [
+            [
+                "5f17344c818e2b50"
+            ]
+        ]
+    },
+    {
+        "id": "5f17344c818e2b50",
+        "type": "change",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "enable",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 830,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "851a41f739e98618",
+        "type": "ui_button",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 9,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "label": "開始記錄30秒",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 140,
+        "y": 520,
+        "wires": [
+            [
+                "07fffc2d0904e3da",
+                "81ca43828131f32f"
+            ]
+        ]
+    },
+    {
+        "id": "81ca43828131f32f",
+        "type": "delay",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "30",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 320,
+        "y": 540,
+        "wires": [
+            [
+                "3eb2feafa6c4894c"
+            ]
+        ]
+    },
+    {
+        "id": "3eb2feafa6c4894c",
+        "type": "change",
+        "z": "5c8117b8314b1a35",
+        "name": "停止紀錄",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "false",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 540,
+        "wires": [
+            [
+                "07fffc2d0904e3da"
+            ]
+        ]
+    },
+    {
+        "id": "c64edd6e2bb99154",
+        "type": "ui_button",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 10,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "label": "開始記錄60秒",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 140,
+        "y": 480,
+        "wires": [
+            [
+                "dab4442d94306143",
+                "07fffc2d0904e3da"
+            ]
+        ]
+    },
+    {
+        "id": "dab4442d94306143",
+        "type": "delay",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "60",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 320,
+        "y": 460,
+        "wires": [
+            [
+                "3eb2feafa6c4894c"
+            ]
+        ]
+    },
+    {
+        "id": "45d1237bba1344ab",
+        "type": "debug",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "f957da4fa1a8de89",
+        "type": "ui_chart",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 16,
+        "width": 0,
+        "height": 0,
+        "label": "測試",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 890,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2b1034eacb899bac",
+        "type": "ui_button",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 17,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "test",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "-10",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 770,
+        "y": 200,
+        "wires": [
+            [
+                "f957da4fa1a8de89"
+            ]
+        ]
+    }
+]

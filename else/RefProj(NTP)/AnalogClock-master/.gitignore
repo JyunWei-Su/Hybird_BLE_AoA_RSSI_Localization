@@ -1,0 +1,11 @@
+.DS_Store
+AnalogClock.code-workspace
+SynchroClock/data
+.pio
+.vscode
+*.bak
+*-bak
+eagle/SynchroClock/SynchroClock.pro
+eagle/SynchroClock/SynchroClock.b#*
+eagle/SynchroClock/SynchroClock.l#*
+eagle/SynchroClock/SynchroClock.s#*

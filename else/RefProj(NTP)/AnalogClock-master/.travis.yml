@@ -1,0 +1,19 @@
+language: python
+python:
+  - "2.7"
+
+sudo: false
+
+cache:
+  directories:
+    - "~/.platformio"
+
+install:
+  - pip install -U platformio
+  - platformio update
+
+script:
+  - cd SynchroClock
+  - platformio run
+  - cd ../I2CAnalogClock
+  - platformio run

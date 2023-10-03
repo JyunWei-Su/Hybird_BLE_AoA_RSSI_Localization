@@ -1,0 +1,65 @@
+[
+    {
+        "id": "e7ba752f8c6f914b",
+        "type": "ui_chart",
+        "z": "5c8117b8314b1a35",
+        "name": "",
+        "group": "8833e8c5c5fc3587",
+        "order": 15,
+        "width": "8",
+        "height": "3",
+        "label": "Animuth (方位角預覽)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-90",
+        "ymax": "90",
+        "removeOlder": 1,
+        "removeOlderPoints": "500",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 700,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8833e8c5c5fc3587",
+        "type": "ui_group",
+        "name": "Angle",
+        "tab": "55d59d934c777f4a",
+        "order": 1,
+        "disp": true,
+        "width": "24",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "55d59d934c777f4a",
+        "type": "ui_tab",
+        "name": "XPLR-AoA (Angle)",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
