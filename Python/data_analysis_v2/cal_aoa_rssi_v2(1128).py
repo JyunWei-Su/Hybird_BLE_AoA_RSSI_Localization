@@ -192,19 +192,19 @@ def get_measurement_data_rssi_esp32(start_time_ms:int, duration_ms:int, anchor_i
 # T4      1668673417000  tag-b   9.25, 9.25
 # T5      1668673579000  tag-a   6.25, 6.25
 test_point = {
-'T1': {'start_time': 1668672951000, 'tag': 'tag-b', 'answer':(9.25, 3.25)},
-'T2': {'start_time': 1668673044000, 'tag': 'tag-b', 'answer':(3.25, 3.25)},
-'T3': {'start_time': 1668673215000, 'tag': 'tag-a', 'answer':(3.25, 9.25)},
-'T4': {'start_time': 1668673417000, 'tag': 'tag-b', 'answer':(9.25, 9.25)},
-'T5': {'start_time': 1668673579000, 'tag': 'tag-a', 'answer':(6.25, 6.25)}
+'T1': {'start_time': 1669600143000, 'tag': 'tag-a', 'answer':(9.25, 3.25)},
+'T2': {'start_time': 1669600236000, 'tag': 'tag-a', 'answer':(3.25, 3.25)},
+'T3': {'start_time': 1669600335000, 'tag': 'tag-a', 'answer':(3.25, 9.25)},
+'T4': {'start_time': 1669600624000, 'tag': 'tag-a', 'answer':(9.25, 9.25)},
+'T5': {'start_time': 1669600523000, 'tag': 'tag-b', 'answer':(6.25, 6.25)}
 }
-#start_time = 1668672951000
-#start_time = 1668673044000
-#start_time = 1668673215000
-#start_time = 1668673311000
-#start_time = 1668673417000
-#start_time = 1668673579000
-CAL_POINT = 'T5'
+# T1 a資料遺失
+# T2 a資料遺失
+# T3 a資料遺失
+# T4 A好B微線
+# T5 A好B線(逼近待改善)
+
+CAL_POINT = 'T5' 
 anchor_list = ['anchor-a', 'anchor-b']
 tag_list = [test_point[CAL_POINT]['tag']]
 start_time = test_point[CAL_POINT]['start_time']
@@ -238,15 +238,15 @@ c_p0 = system_config['anchor-c']['p0']['mix'] + system_config[tag_list[0]]['tx_p
 d_p0 = system_config['anchor-d']['p0']['mix'] + system_config[tag_list[0]]['tx_power']
 c_gamma = system_config['anchor-c']['gamma']['mix']
 d_gamma = system_config['anchor-d']['gamma']['mix']
-c_pos = (12.5, 12.5)
-d_pos = (0, 12.5)
+d_pos = (12.5, 12.5)
+c_pos = (0, 12.5)
 
 print(a_37_rssi, a_38_rssi, a_39_rssi)
 print(b_37_rssi, b_38_rssi, b_39_rssi)
 
 df['time'] = pd.to_datetime(df['unix_time'], unit='ms', utc=True).dt.strftime('%Y-%m-%d %H:%M:%S.%f')
 df['time'] = df['time'].apply(pd.Timestamp)
-
+print(df)
 
 dfs = []
 
@@ -255,15 +255,22 @@ for anchor in anchor_list:
     anchor_id = system_config[anchor]['id']
     if anchor_type == 'rssi+aoa:xplr-aoa':
         for tag in tag_list:
-            mask_anchor = (df['anchor_id'] == anchor_id)
-            mask_tag = (df['instance_id'] == system_config[tag]['id'])
-            temp = df[(mask_anchor & mask_tag)]
-            temp = temp.resample('0.5S', on='time').mean() ##dddd
-            temp = temp.drop(columns=[ 'unix_time'])
-            temp['anchor'] = [anchor + '@chmix'] * len(temp)
-            #temp['tag'] = [tag + '@' + str(system_config[tag]['tx_power'])] * len(temp)
-            #print(temp)
-            dfs.append(temp)
+            try:
+                mask_anchor = (df['anchor_id'] == anchor_id)
+                mask_tag = (df['instance_id'] == system_config[tag]['id'])
+                temp = df[(mask_anchor & mask_tag)]
+                temp = temp.resample('0.5S', on='time').mean() ##dddd
+                temp = temp.drop(columns=[ 'unix_time'])
+                temp['anchor'] = [anchor + '@chmix'] * len(temp)
+                if(anchor == 'anchor-a'):
+                    temp['azimuth'] = temp['azimuth'] - 45
+                elif(anchor == 'anchor-b'):
+                    temp['azimuth'] = temp['azimuth'] + 45
+                #temp['tag'] = [tag + '@' + str(system_config[tag]['tx_power'])] * len(temp)
+                #print(temp)
+                dfs.append(temp)
+            except:
+                print(anchor, 'error')
 
 measurement_data = pd.concat(dfs)
 measurement_data = measurement_data.reset_index()
@@ -274,7 +281,7 @@ times = measurement_data['time']
 times = times.drop_duplicates()
 times = times.sort_values()
 #print(times)
-print(measurement_data)
+#print(measurement_data)
 print('data_get')
 
 # Python program to get average of a list
@@ -310,11 +317,6 @@ def cal_loc(system_config:dict, df:pd.DataFrame):
     u = d / math.tan(angle_b)
     return (u, d)
 
-def check_inside(point:tuple):
-    if(0 <= point[0] and point[0] <= 12.5 and 0 <= point[1] and point[1] <= 12.5):
-        return True
-    else:
-        return False
 
 #print(times.index)
 xy_list = []
@@ -358,7 +360,7 @@ print('=====單純使用AoA=====')
 print(round(result_aoa[0], 2), round(result_aoa[1], 2))
 print('誤差:', round(error_aoa, 2), 'm')
 
-print('=====使用RSSI輔助(line)=====')
+print('=====使用RSSI輔助=====')
 #let line = ax+b ,a = line[0], b = line[1] 
 line = find_regression_line(xy_list)
 #print('回歸線: y=', round(line[0], 2), 'x +', round(line[1], 2))
@@ -370,11 +372,9 @@ diverge_count = 1
 while(True):
     point_p = (objection_point[0] + 0.1 * diverge_count, objection_point[1] + 0.1 * diverge_count * line[0])
     point_m = (objection_point[0] - 0.1 * diverge_count, objection_point[1] - 0.1 * diverge_count * line[0])
-    if(p2p(point_p, objection_point) <= 50 * diverge_range):
-        if(check_inside(point_p)):
-            diverge_points.append(point_p)
-        if(check_inside(point_m)):
-            diverge_points.append(point_m)
+    if(p2p(point_p, objection_point) <= 10 * diverge_range):
+        diverge_points.append(point_p)
+        diverge_points.append(point_m)
         diverge_count += 1
     else:
         break
@@ -398,18 +398,19 @@ for index, point in enumerate(diverge_points):
     RSSI_C = c_p0 - c_gamma * np.log10(p2p(point, c_pos))
     # d
     RSSI_D = d_p0 - d_gamma * np.log10(p2p(point, d_pos))
+    # debug print
     # print(p2p(point, a_pos), RSSI_A37, RSSI_B37, RSSI_C, RSSI_D)
 
-    DIFF_37 = (RSSI_A37 - RSSI_B37) - (a_37_rssi - b_37_rssi) + 8
-    DIFF_38 = (RSSI_A38 - RSSI_B38) - (a_38_rssi - b_38_rssi) + 12
-    DIFF_39 = (RSSI_A39 - RSSI_B39) - (a_39_rssi - b_39_rssi) + 0
-    DIFF_CD = (RSSI_C - RSSI_D) - (c_rssi - d_rssi) + 0
+    DIFF_37 = (RSSI_A37 - RSSI_B37) - (a_37_rssi - b_37_rssi) +8
+    DIFF_38 = (RSSI_A38 - RSSI_B38) - (a_38_rssi - b_38_rssi) +12
+    DIFF_39 = (RSSI_A39 - RSSI_B39) - (a_39_rssi - b_39_rssi)
+    DIFF_CD = (RSSI_C - RSSI_D) - (c_rssi - d_rssi) 
     DIFF_37 = abs(DIFF_37)
     DIFF_38 = abs(DIFF_38)
     DIFF_39 = abs(DIFF_39)
     DIFF_CD = abs(DIFF_CD)
     print(point, DIFF_37, DIFF_38, DIFF_39, DIFF_CD, sep='\t')
-    temp_error = DIFF_37 + DIFF_38 + DIFF_39 + DIFF_CD -  max(DIFF_37, DIFF_38, DIFF_39, DIFF_CD)
+    temp_error = abs(DIFF_37) + abs(DIFF_38) + abs(DIFF_39) + abs(DIFF_CD) - 0* max(DIFF_37, DIFF_38, DIFF_39, DIFF_CD)
     diverge_points_error[index] = temp_error
 
 for index, point in enumerate(diverge_points):
@@ -422,61 +423,9 @@ result_aoa_rssi = diverge_points[diverge_points_error.index(min(diverge_points_e
 error_aoa_rssi_x = answer[0] - result_aoa_rssi[0]
 error_aoa_rssi_y = answer[1] - result_aoa_rssi[1]
 error_aoa_rssi = math.sqrt(error_aoa_rssi_x * error_aoa_rssi_x + error_aoa_rssi_y * error_aoa_rssi_y)
-# print(round(result_aoa_rssi[0], 2), round(result_aoa_rssi[1], 2))
+print(round(result_aoa_rssi[0], 2), round(result_aoa_rssi[1], 2))
 print('誤差:', round(error_aoa_rssi, 2), 'm')
 
-
-
-print('=====使用RSSI輔助(cir)=====')
-
-# 發散n個點 每0.1斜率
-diverge_c_points = circle_diverge([result_aoa], 3, 100)
-diverge_c_points_error = [0] * len(diverge_c_points)
-for index, point in enumerate(diverge_c_points):
-    # print(index, point)
-    temp_error = 0
-    # a 37
-    RSSI_A37 = a_37_p0 - a_37_gamma * np.log10(p2p(point, a_pos))
-    # a 38
-    RSSI_A38 = a_38_p0 - a_38_gamma * np.log10(p2p(point, a_pos))
-    # a 39
-    RSSI_A39 = a_39_p0 - a_39_gamma * np.log10(p2p(point, a_pos))
-    # b 37
-    RSSI_B37 = b_37_p0 - b_37_gamma * np.log10(p2p(point, b_pos))
-    # b 38
-    RSSI_B38 = b_38_p0 - b_38_gamma * np.log10(p2p(point, b_pos))
-    # b 39
-    RSSI_B39 = b_39_p0 - b_39_gamma * np.log10(p2p(point, b_pos))
-    # c
-    RSSI_C = c_p0 - c_gamma * np.log10(p2p(point, c_pos))
-    # d
-    RSSI_D = d_p0 - d_gamma * np.log10(p2p(point, d_pos))
-    #print(p2p(point, a_pos), RSSI_A37, RSSI_B37, RSSI_C, RSSI_D)
-
-    DIFF_37 = (RSSI_A37 - RSSI_B37) - (a_37_rssi - b_37_rssi)
-    DIFF_38 = (RSSI_A38 - RSSI_B38) - (a_38_rssi - b_38_rssi)
-    DIFF_39 = (RSSI_A39 - RSSI_B39) - (a_39_rssi - b_39_rssi)
-    DIFF_CD = (RSSI_C - RSSI_D) - (c_rssi - d_rssi)
-    DIFF_37 = abs(DIFF_37)
-    DIFF_38 = abs(DIFF_38)
-    DIFF_39 = abs(DIFF_39)
-    DIFF_CD = abs(DIFF_CD)
-    #print(point, DIFF_37, DIFF_38, DIFF_39, DIFF_CD, sep='\t')
-    temp_error = DIFF_37 + DIFF_38 + DIFF_39 + DIFF_CD-  max(DIFF_37, DIFF_38, DIFF_39, DIFF_CD)
-    diverge_c_points_error[index] = temp_error
-
-for index, point in enumerate(diverge_c_points):
-    #print(index, round(diverge_points_error[index], 2), point, sep='\t')
-    pass
-
-#print(diverge_points)
-result_aoa_rssi_c = diverge_c_points[diverge_c_points_error.index(min(diverge_c_points_error))]
-#print(result_aoa_rssi)
-error_aoa_rssi_c_x = answer[0] - result_aoa_rssi_c[0]
-error_aoa_rssi_c_y = answer[1] - result_aoa_rssi_c[1]
-error_aoa_rssi_c = math.sqrt(error_aoa_rssi_c_x * error_aoa_rssi_c_x + error_aoa_rssi_c_y * error_aoa_rssi_c_y)
-# print(round(result_aoa_rssi[0], 2), round(result_aoa_rssi[1], 2))
-print('誤差:', round(error_aoa_rssi_c, 2), 'm')
 
 #-------------------------
 
@@ -550,17 +499,12 @@ for point_x, point_y in xy_list:
 for point_x, point_y in diverge_points:
     plt.scatter(point_x, point_y, marker='.', color='violet', s=10)
 
-for point_x, point_y in diverge_c_points:
-    plt.scatter(point_x, point_y, marker='.', color='red', s=10)
-
 # print(xy_list)
 
 
 plt.scatter(result_aoa[0], result_aoa[1], marker='x', color='blue', s=75)
 plt.scatter(result_aoa_rssi[0], result_aoa_rssi[1], marker='x', color='purple', s=75)
-plt.scatter(result_aoa_rssi_c[0], result_aoa_rssi_c[1], marker='x', color='red', s=75)
 plt.scatter(answer[0], answer[1], marker='x', color='yellow', s=75)
-
 
 plt.title(POINT + " mov_avg="+ str(move_avg_count) + '')
 

@@ -1,0 +1,11 @@
+import numpy as np
+
+#only rssi
+a1 = np.array([2,0])
+a2 = np.array([2,2])
+ar = np.array([0,0])
+H = np.vstack([a1-ar,a2-ar])
+HT = np.transpose(H)
+b = np.array([[2],[4]])        #假設
+Xr_rssi = (np.linalg.inv(HT@H))@HT@b
+print(Xr_rssi)
